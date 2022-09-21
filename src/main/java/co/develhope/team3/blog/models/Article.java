@@ -19,17 +19,15 @@ public class Article {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(min=5, message = "il titolo deve contenere al minimo 5 caratteri")
-    @NotBlank(message = "il titolo non puo essere vuoto")
+
     @Column(name = "article_title", nullable = false)
     private String title;
 
-    @NotBlank(message = "il contenuto non puo essere vuoto")
+
     @Column(nullable = false, length = 100000000)
     private String content;
 
     @Column(nullable = false)
-    @NotBlank(message = "è obbligatorio impostare se l'articolo dev'essere tra le news")
     private Boolean isNews;
 
     private Date createdOn;

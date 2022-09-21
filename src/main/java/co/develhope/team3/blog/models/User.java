@@ -32,8 +32,6 @@ public class User {
     private String password;
 
     @Column(nullable = false, unique = true)
-    @Email(message = "email non corretta")
-    @NotBlank(message = "il campo email non puo essere vuoto")
     private String email;
 
     private String about;
