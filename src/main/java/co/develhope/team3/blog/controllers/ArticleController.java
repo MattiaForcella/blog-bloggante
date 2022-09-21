@@ -9,6 +9,7 @@ import co.develhope.team3.blog.payloads.ArticleResponse;
 import co.develhope.team3.blog.payloads.DeleteResponse;
 import co.develhope.team3.blog.services.ArticleService;
 import co.develhope.team3.blog.services.FileService;
+import it.pasqualecavallo.studentsmaterial.authorization_framework.filter.AuthenticationContext;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.security.HierarchicalSecurity;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.security.PublicEndpoint;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.security.ZeroSecurity;
@@ -49,6 +50,8 @@ public class ArticleController {
     public ResponseEntity<ArticleDto> createArticle(@RequestBody @Valid ArticleDto articleDto,
                                         @PathVariable Long userId,
                                         @PathVariable Long categoryId){
+        AuthenticationContext.Principal principal = AuthenticationContext.get();
+        //TODO confrontare id di principal con quello di userID per verificare identità articolo
         ArticleDto createArticle =this.articleService.createArticle(articleDto,userId,categoryId);
         return new ResponseEntity<ArticleDto>(createArticle, HttpStatus.CREATED);
     }

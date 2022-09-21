@@ -27,6 +27,10 @@ public class User {
     @NotBlank(message = "il campo username non puo essere vuoto")
     private String username;
 
+    //TODO quando in futurò verrà implementata la classe relativa alla registrazione, ricordarsi di aggiungere la codifica dalla libreria di Pasquale (giustifica lenght = 150)
+    @Column(length = 150)
+    private String password;
+
     @Column(nullable = false, unique = true)
     @Email(message = "email non corretta")
     @NotBlank(message = "il campo email non puo essere vuoto")
