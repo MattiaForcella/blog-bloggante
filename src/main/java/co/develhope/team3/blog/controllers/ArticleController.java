@@ -107,7 +107,7 @@ public class ArticleController {
     }
 
     @HierarchicalSecurity(bottomRole = "ROLE_EDITOR")
-    @PutMapping("/update/{userId}/{articleId}/title")
+    @PutMapping("/update-title/{userId}/{articleId}/title")
     public ResponseEntity<ArticleDto> updateTitleArticle(@PathVariable Long userId,@PathVariable Long articleId ,@RequestParam("title") String title) throws AuthException {
         AuthenticationContext.Principal principal = AuthenticationContext.get();
         ArticleDto updateArticle = this.articleService.updateTitleArticle(articleId, userId,principal,title);
@@ -115,7 +115,7 @@ public class ArticleController {
     }
 
     @HierarchicalSecurity(bottomRole = "ROLE_EDITOR")
-    @PutMapping("/update/{userId}/{articleId}/content")
+    @PutMapping("/update-content/{userId}/{articleId}/content")
     public ResponseEntity<ArticleDto> updateContentArticle(@PathVariable Long userId,@PathVariable Long articleId ,@RequestParam("content") String content) throws AuthException {
 
         AuthenticationContext.Principal principal = AuthenticationContext.get();
@@ -124,7 +124,7 @@ public class ArticleController {
     }
 
     @HierarchicalSecurity(bottomRole = "ROLE_EDITOR")
-    @PutMapping("/update/{userId}/{articleId}/news")
+    @PutMapping("/update-news/{userId}/{articleId}/news")
     public ResponseEntity<ArticleDto> updateNewsArticle(@PathVariable Long userId,@PathVariable Long articleId ,@RequestParam("news") Boolean news) throws AuthException {
 
         AuthenticationContext.Principal principal = AuthenticationContext.get();
@@ -133,7 +133,7 @@ public class ArticleController {
     }
 
     @HierarchicalSecurity(bottomRole = "ROLE_EDITOR")
-    @PutMapping("/update/{userId}/{articleId}")
+    @PutMapping("/update-tag/{userId}/{articleId}")
     public ResponseEntity<ArticleDto> updateTagArticle(@PathVariable Long userId,@PathVariable Long articleId , @RequestBody List<Tag> tags) throws AuthException {
 
         AuthenticationContext.Principal principal = AuthenticationContext.get();
@@ -142,7 +142,7 @@ public class ArticleController {
     }
 
     @HierarchicalSecurity(bottomRole = "ROLE_EDITOR")
-    @PutMapping("/update/{userId}/{articleId}")
+    @PutMapping("/update-category/{userId}/{articleId}")
     public ResponseEntity<ArticleDto> updateCategoryArticle(@PathVariable Long userId,@PathVariable Long articleId , @RequestBody CategoryDto category) throws AuthException {
 
         AuthenticationContext.Principal principal = AuthenticationContext.get();
@@ -151,7 +151,7 @@ public class ArticleController {
     }
 
     @HierarchicalSecurity(bottomRole = "ROLE_USER")
-    @PutMapping("/update/{userId}/{articleId}/{commentId}")
+    @PutMapping("/update-comment/{userId}/{articleId}/{commentId}")
     public ResponseEntity<ArticleDto> updateCommentArticle(@PathVariable Long userId,@PathVariable Long articleId , @RequestBody CommentDto commentId) throws AuthException {
 
         AuthenticationContext.Principal principal = AuthenticationContext.get();
