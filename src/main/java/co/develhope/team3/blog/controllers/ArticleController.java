@@ -12,7 +12,6 @@ import co.develhope.team3.blog.services.FileService;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.filter.AuthenticationContext;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.security.HierarchicalSecurity;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.security.PublicEndpoint;
-import it.pasqualecavallo.studentsmaterial.authorization_framework.security.ZeroSecurity;
 import org.hibernate.engine.jdbc.StreamUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.security.auth.message.AuthException;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
@@ -49,11 +49,13 @@ public class ArticleController {
     @PostMapping("/user/{userId}/category/{categoryId}/articles")
     public ResponseEntity<ArticleDto> createArticle(@RequestBody @Valid ArticleDto articleDto,
                                         @PathVariable Long userId,
-                                        @PathVariable Long categoryId){
+                                        @PathVariable Long categoryId) throws AuthException {
+
         AuthenticationContext.Principal principal = AuthenticationContext.get();
-        //TODO confrontare id di principal con quello di userID per verificare identità articolo
-        ArticleDto createArticle =this.articleService.createArticle(articleDto,userId,categoryId);
+        ArticleDto createArticle =this.articleService.createArticle(articleDto,userId,categoryId, principal);
+
         return new ResponseEntity<ArticleDto>(createArticle, HttpStatus.CREATED);
+
     }
 
     @PublicEndpoint
@@ -87,68 +89,100 @@ public class ArticleController {
     }
 
 
-    @DeleteMapping("/articles/{articleId}")
-    public ResponseEntity<DeleteResponse> deleteArticle(@PathVariable Long articleId){
-        ArticleDto articleDto = this.articleService.deleteArticle(articleId);
+    @HierarchicalSecurity(bottomRole = "ROLE_EDITOR")
+    @DeleteMapping("/articles/{userId}/{articleId}")
+    public ResponseEntity<DeleteResponse> deleteArticle(@PathVariable Long articleId, @PathVariable Long userId) throws AuthException {
+        AuthenticationContext.Principal principal = AuthenticationContext.get();
+        ArticleDto articleDto = this.articleService.deleteArticle(articleId, principal, userId);
         DeleteResponse deleteResponse = new DeleteResponse("Article is sucessfully deleted", articleDto);
         return new ResponseEntity<DeleteResponse>(deleteResponse, HttpStatus.GONE);
     }
 
-    @PutMapping("/articles/{articleId}")
-    public ResponseEntity<ArticleDto> updatePost(@RequestBody @Valid ArticleDto articleDto, @PathVariable Long articleId) {
-        ArticleDto updateArticle = this.articleService.updateArticle(articleDto, articleId);
+    @HierarchicalSecurity(bottomRole = "ROLE_EDITOR")
+    @PutMapping("/articles/{userId}/{articleId}")
+    public ResponseEntity<ArticleDto> updatePost(@RequestBody @Valid ArticleDto articleDto, @PathVariable Long articleId,@PathVariable Long userId) throws AuthException {
+        AuthenticationContext.Principal principal = AuthenticationContext.get();
+        ArticleDto updateArticle = this.articleService.updateArticle(articleDto, articleId, userId,principal);
         return new ResponseEntity<ArticleDto>(updateArticle, HttpStatus.GONE);
     }
 
-    @PutMapping("/update/{id}/title")
-    public ResponseEntity<ArticleDto> updateTitleArticle(@PathVariable Long id ,@RequestParam("title") String title){
-        return new ResponseEntity<ArticleDto>(articleService.updateTitleArticle(id,title), HttpStatus.OK);
+    @HierarchicalSecurity(bottomRole = "ROLE_EDITOR")
+    @PutMapping("/update/{userId}/{articleId}/title")
+    public ResponseEntity<ArticleDto> updateTitleArticle(@PathVariable Long userId,@PathVariable Long articleId ,@RequestParam("title") String title) throws AuthException {
+        AuthenticationContext.Principal principal = AuthenticationContext.get();
+        ArticleDto updateArticle = this.articleService.updateTitleArticle(articleId, userId,principal,title);
+        return new ResponseEntity<ArticleDto>(updateArticle, HttpStatus.OK);
     }
 
-    @PutMapping("/update/{id}/content")
-    public ResponseEntity<ArticleDto> updateContentArticle(@PathVariable Long id ,@RequestParam("content") String content){
-        return new ResponseEntity<ArticleDto>(articleService.updateContentArticle(id,content), HttpStatus.OK);
+    @HierarchicalSecurity(bottomRole = "ROLE_EDITOR")
+    @PutMapping("/update/{userId}/{articleId}/content")
+    public ResponseEntity<ArticleDto> updateContentArticle(@PathVariable Long userId,@PathVariable Long articleId ,@RequestParam("content") String content) throws AuthException {
+
+        AuthenticationContext.Principal principal = AuthenticationContext.get();
+        ArticleDto updateArticle = this.articleService.updateContentArticle(userId, content, articleId, principal);
+        return new ResponseEntity<ArticleDto>(updateArticle, HttpStatus.OK);
     }
 
-    @PutMapping("/update/{id}/news")
-    public ResponseEntity<ArticleDto> updateNewsArticle(@PathVariable Long id ,@RequestParam("news") Boolean news){
-        return new ResponseEntity<ArticleDto>(articleService.updateNewsArticle(id,news), HttpStatus.OK);
+    @HierarchicalSecurity(bottomRole = "ROLE_EDITOR")
+    @PutMapping("/update/{userId}/{articleId}/news")
+    public ResponseEntity<ArticleDto> updateNewsArticle(@PathVariable Long userId,@PathVariable Long articleId ,@RequestParam("news") Boolean news) throws AuthException {
+
+        AuthenticationContext.Principal principal = AuthenticationContext.get();
+        ArticleDto updateArticle = this.articleService.updateNewsArticle(userId,articleId,news, principal);
+        return new ResponseEntity<ArticleDto>(updateArticle, HttpStatus.OK);
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<ArticleDto> updateTagArticle(@PathVariable Long id , @RequestBody List<Tag> tags){
-        return new ResponseEntity<ArticleDto>(articleService.updateTagsArticle(id,tags), HttpStatus.OK);
+    @HierarchicalSecurity(bottomRole = "ROLE_EDITOR")
+    @PutMapping("/update/{userId}/{articleId}")
+    public ResponseEntity<ArticleDto> updateTagArticle(@PathVariable Long userId,@PathVariable Long articleId , @RequestBody List<Tag> tags) throws AuthException {
+
+        AuthenticationContext.Principal principal = AuthenticationContext.get();
+        ArticleDto updateArticle = this.articleService.updateTagsArticle(userId, articleId, tags, principal);
+        return new ResponseEntity<ArticleDto>(updateArticle, HttpStatus.OK);
     }
 
-    @PutMapping("/update/{articleId}")
-    public ResponseEntity<ArticleDto> updateCategoryArticle(@PathVariable Long articleId , @RequestBody CategoryDto category){
-        return new ResponseEntity<ArticleDto>(articleService.updateCategoriesArticle(articleId,category), HttpStatus.OK);
+    @HierarchicalSecurity(bottomRole = "ROLE_EDITOR")
+    @PutMapping("/update/{userId}/{articleId}")
+    public ResponseEntity<ArticleDto> updateCategoryArticle(@PathVariable Long userId,@PathVariable Long articleId , @RequestBody CategoryDto category) throws AuthException {
+
+        AuthenticationContext.Principal principal = AuthenticationContext.get();
+        ArticleDto updateArticle = this.articleService.updateCategoriesArticle(principal, userId, articleId, category);
+        return new ResponseEntity<ArticleDto>(updateArticle, HttpStatus.OK);
     }
 
-    @PutMapping("/update/{articleId}/{commentId}")
-    public ResponseEntity<ArticleDto> updateCommentArticle(@PathVariable Long articleId , @RequestBody CommentDto commentId){
+    @HierarchicalSecurity(bottomRole = "ROLE_USER")
+    @PutMapping("/update/{userId}/{articleId}/{commentId}")
+    public ResponseEntity<ArticleDto> updateCommentArticle(@PathVariable Long userId,@PathVariable Long articleId , @RequestBody CommentDto commentId) throws AuthException {
 
-        return new ResponseEntity<ArticleDto>(articleService.updateCommentArticle(articleId,commentId), HttpStatus.OK);
+        AuthenticationContext.Principal principal = AuthenticationContext.get();
+        ArticleDto updateArticle = this.articleService.updateCommentArticle(articleId,userId,commentId,principal);
+        return new ResponseEntity<ArticleDto>(updateArticle, HttpStatus.OK);
     }
 
+    @PublicEndpoint
     @GetMapping("/articles/search/{keywords}")
     public ResponseEntity<List<ArticleDto>> searchArticleByTitle(@PathVariable("keywords") String keywords) {
         List<ArticleDto> result = this.articleService.searchPosts(keywords);
         return new ResponseEntity<List<ArticleDto>>(result, HttpStatus.OK);
     }
 
-    @PostMapping("/article/image/upload/{articleId}")
-    public ResponseEntity<ArticleDto> uploadPostImage(@RequestParam("image") MultipartFile image,
-                                                      @PathVariable Long articleId) throws IOException {
 
+    @HierarchicalSecurity(bottomRole = "ROLE_EDITOR")
+    @PostMapping("/article/image/upload/{userId}/{articleId}")
+    public ResponseEntity<ArticleDto> uploadPostImage(@RequestParam("image") MultipartFile image,
+                                                      @PathVariable Long articleId,
+                                                      @PathVariable Long userId) throws IOException, AuthException {
+
+        AuthenticationContext.Principal principal = AuthenticationContext.get();
         ArticleDto articleDto = this.articleService.getArticleById(articleId);
-        String fileName = this.fileService.uploadImage(path, image);
+        String fileName = this.fileService.uploadImage(path, image, principal, userId);
         articleDto.setImageName(fileName);
-        ArticleDto updateArticle = this.articleService.updateArticle(articleDto, articleId);
+        ArticleDto updateArticle = this.articleService.updateArticle(articleDto, articleId, userId, principal);
         return new ResponseEntity<ArticleDto>(updateArticle, HttpStatus.OK);
 
     }
 
+    @PublicEndpoint
     @GetMapping(value = "/article/image/{imageName}",produces = MediaType.IMAGE_JPEG_VALUE)
     public void downloadImage(
             @PathVariable("imageName") String imageName,

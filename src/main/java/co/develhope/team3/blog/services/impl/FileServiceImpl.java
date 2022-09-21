@@ -1,9 +1,11 @@
 package co.develhope.team3.blog.services.impl;
 
 import co.develhope.team3.blog.services.FileService;
+import it.pasqualecavallo.studentsmaterial.authorization_framework.filter.AuthenticationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.security.auth.message.AuthException;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -12,8 +14,13 @@ import java.util.UUID;
 @Service
 public class FileServiceImpl implements FileService {
     @Override
-    public String uploadImage(String path, MultipartFile file) throws IOException {
+    public String uploadImage(String path, MultipartFile file, AuthenticationContext.Principal principal, Long userId) throws IOException, AuthException {
         // File name
+
+        if (!principal.getUserId().equals(userId)) {
+            throw new AuthException("Unauthorized editor, editor_id mismatch");
+        }
+
         String name = file.getOriginalFilename();
         // abc.png
 
