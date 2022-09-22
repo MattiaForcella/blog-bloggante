@@ -3,7 +3,6 @@ package co.develhope.team3.blog.services.impl;
 import co.develhope.team3.blog.dto.ArticleDto;
 import co.develhope.team3.blog.dto.CategoryDto;
 import co.develhope.team3.blog.dto.CommentDto;
-import co.develhope.team3.blog.dto.TagDto;
 import co.develhope.team3.blog.exceptions.ResourceNotFoundException;
 import co.develhope.team3.blog.models.*;
 import co.develhope.team3.blog.payloads.ArticleResponse;
@@ -15,19 +14,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.time.Instant;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,7 +36,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Autowired
     private CommentRepository commentRepository;
     @Autowired
-    private TagService tagService;
+    private TagServiceImpl tagServiceImpl;
     @Autowired
     CommentService commentService;
 

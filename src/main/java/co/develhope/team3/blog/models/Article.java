@@ -19,10 +19,8 @@ public class Article {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @Column(name = "article_title", nullable = false)
     private String title;
-
 
     @Column(nullable = false, length = 100000000)
     private String content;
