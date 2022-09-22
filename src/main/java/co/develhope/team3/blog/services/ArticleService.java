@@ -26,7 +26,9 @@ public interface ArticleService {
     ArticleDto updateArticle(ArticleDto articleDto, Long articleId, Long userId, AuthenticationContext.Principal principal) throws AuthException;
 
 
+
     ArticleDto updateTitleArticle(Long articleId, Long userId, AuthenticationContext.Principal principal, String title) throws AuthException;
+
 
     ArticleDto updateContentArticle(Long articleId, String content, Long userId, AuthenticationContext.Principal principal) throws AuthException;
 

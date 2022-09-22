@@ -5,8 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "tags")
@@ -19,11 +17,10 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 15)
     private String name;
 
-    @ManyToOne
-    //@JsonIgnore
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "tags")
     private Article article;
 
 }

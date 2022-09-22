@@ -17,7 +17,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+
 import javax.security.auth.message.AuthException;
+
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,7 +40,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Autowired
     private CommentRepository commentRepository;
     @Autowired
-    private TagService tagService;
+    private TagServiceImpl tagServiceImpl;
     @Autowired
     CommentService commentService;
 
