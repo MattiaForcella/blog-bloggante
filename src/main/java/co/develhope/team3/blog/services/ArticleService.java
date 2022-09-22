@@ -24,6 +24,7 @@ public interface ArticleService {
 
     ArticleDto updateArticle(ArticleDto articleDto, Long articleId);
 
+
     ArticleDto updateTitleArticle(Long id, String title);
 
     ArticleDto updateContentArticle(Long id, String content);
