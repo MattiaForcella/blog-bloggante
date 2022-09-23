@@ -6,7 +6,7 @@ import co.develhope.team3.blog.dto.CategoryDto;
 import co.develhope.team3.blog.dto.CommentDto;
 import co.develhope.team3.blog.models.Tag;
 import co.develhope.team3.blog.payloads.ArticleResponse;
-import co.develhope.team3.blog.payloads.DeleteResponse;
+import co.develhope.team3.blog.payloads.ArticleDeleteResponse;
 import co.develhope.team3.blog.services.ArticleService;
 import co.develhope.team3.blog.services.FileService;
 import co.develhope.team3.blog.services.UtilsService;
@@ -93,15 +93,16 @@ public class ArticleController {
 
     @HierarchicalSecurity(bottomRole = "ROLE_EDITOR")
     @DeleteMapping("/articles/{userId}/{articleId}")
-    public ResponseEntity<DeleteResponse> deleteArticle(@PathVariable Long articleId, @PathVariable Long userId) throws AuthException {
+    public ResponseEntity<ArticleDeleteResponse> deleteArticle(@PathVariable Long articleId, @PathVariable Long userId) throws AuthException {
 
         AuthenticationContext.Principal principal = AuthenticationContext.get();
         utilsService.authControl(userId, principal);
 
-        ArticleDto articleDto = this.articleService.deleteArticle(articleId);
-        DeleteResponse deleteResponse = new DeleteResponse("Article is sucessfully deleted", articleDto);
+        ArticleDto articleDeleted = this.articleService.deleteArticle(articleId);
 
-        return new ResponseEntity<DeleteResponse>(deleteResponse, HttpStatus.GONE);
+        return new ResponseEntity<ArticleDeleteResponse>( new ArticleDeleteResponse("Article is sucessfully deleted",
+                                                                                    articleDeleted),
+                                                                                    HttpStatus.OK);
     }
 
     @HierarchicalSecurity(bottomRole = "ROLE_EDITOR")

@@ -1,6 +1,7 @@
 package co.develhope.team3.blog.services.impl;
 
 import co.develhope.team3.blog.dto.CategoryDto;
+import co.develhope.team3.blog.exceptions.ResourceNotFoundException;
 import co.develhope.team3.blog.models.Category;
 import co.develhope.team3.blog.repository.CategoryRepository;
 import co.develhope.team3.blog.services.CategoryService;
@@ -38,6 +39,27 @@ public class CategoryServiceImpl implements CategoryService {
         CategoryDto categoryDtoUpdate = this.modelMapper.map(category, CategoryDto.class);
 
         return categoryDtoUpdate;
+
+    }
+
+    @Override
+    public CategoryDto getCategory(Long categoryId) {
+        Category cat = this.categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new ResourceNotFoundException("Category", "category id", categoryId));
+
+        return this.modelMapper.map(cat, CategoryDto.class);
+    }
+
+    @Override
+    public CategoryDto deleteCategory(Long categoryId) {
+
+        Category category = this.categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new ResourceNotFoundException("Category", "category_id",categoryId));
+
+        CategoryDto categoryDto = this.modelMapper.map(category, CategoryDto.class);
+
+        this.categoryRepository.delete(category);
+        return  categoryDto;
 
     }
 }
