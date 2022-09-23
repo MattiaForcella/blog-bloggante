@@ -3,6 +3,7 @@ package co.develhope.team3.blog.controllers;
 
 import co.develhope.team3.blog.dto.CategoryDto;
 import co.develhope.team3.blog.services.CategoryService;
+import co.develhope.team3.blog.services.UtilsService;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.filter.AuthenticationContext;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.security.HierarchicalSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +20,16 @@ public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private UtilsService utilsService;
 
     @HierarchicalSecurity(bottomRole = "ROLE_EDITOR")
     @PostMapping("/user/{userId}/create-category")
     public ResponseEntity<CategoryDto> createCategory(@Valid @RequestBody CategoryDto categoryDto,
                                                         @PathVariable Long userId) throws AuthException {
         AuthenticationContext.Principal principal = AuthenticationContext.get();
-
-        CategoryDto createCategory = this.categoryService.createCategory(categoryDto, principal, userId);
+        utilsService.authControl(userId, principal);
+        CategoryDto createCategory = this.categoryService.createCategory(categoryDto);
 
         return  new ResponseEntity<CategoryDto>(createCategory, HttpStatus.CREATED);
 
@@ -38,7 +41,8 @@ public class CategoryController {
                                                       @PathVariable Long categoryId,
                                                       @Valid @RequestBody CategoryDto categoryDto) throws AuthException {
         AuthenticationContext.Principal principal = AuthenticationContext.get();
-        CategoryDto updateCategory = this.categoryService.updateCategory(categoryDto, userId, categoryId, principal);
+        utilsService.authControl(userId, principal);
+        CategoryDto updateCategory = this.categoryService.updateCategory(categoryDto, categoryId);
         return new ResponseEntity<>(updateCategory, HttpStatus.GONE);
     }
 

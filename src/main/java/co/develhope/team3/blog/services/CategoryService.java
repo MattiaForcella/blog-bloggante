@@ -6,7 +6,7 @@ import it.pasqualecavallo.studentsmaterial.authorization_framework.filter.Authen
 import javax.security.auth.message.AuthException;
 
 public interface CategoryService {
-    CategoryDto createCategory(CategoryDto categoryDto, AuthenticationContext.Principal principal, Long userId) throws AuthException;
+    CategoryDto createCategory(CategoryDto categoryDto) ;
 
-    CategoryDto updateCategory(CategoryDto categoryDto, Long userId, Long categoryId, AuthenticationContext.Principal principal) throws AuthException;
+    CategoryDto updateCategory(CategoryDto categoryDto, Long categoryId) ;
 }
