@@ -1,6 +1,7 @@
 package co.develhope.team3.blog.payloads;
 
 import co.develhope.team3.blog.dto.ArticleDto;
+import co.develhope.team3.blog.dto.CategoryDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,9 +11,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeleteResponse {
-
+public class CategoryDeleteResponse {
     private String message;
-    private ArticleDto articleDto;
-
+    private CategoryDto categoryDto;
 }
