@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "tags")
@@ -20,7 +21,7 @@ public class Tag {
     @Column(nullable = false, length = 15)
     private String name;
 
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "tags")
-    private Article article;
+    @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "tags")
+    private List<Article> article;
 
 }
