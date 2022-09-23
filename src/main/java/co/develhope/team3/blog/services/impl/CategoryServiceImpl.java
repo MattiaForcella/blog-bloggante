@@ -3,15 +3,18 @@ package co.develhope.team3.blog.services.impl;
 import co.develhope.team3.blog.dto.CategoryDto;
 import co.develhope.team3.blog.exceptions.ResourceNotFoundException;
 import co.develhope.team3.blog.models.Category;
+import co.develhope.team3.blog.payloads.CategoryResponse;
 import co.develhope.team3.blog.repository.CategoryRepository;
 import co.develhope.team3.blog.services.CategoryService;
 import co.develhope.team3.blog.services.UtilsService;
-import it.pasqualecavallo.studentsmaterial.authorization_framework.filter.AuthenticationContext;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import javax.security.auth.message.AuthException;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -66,12 +69,26 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<CategoryDto> getCategories() {
+    public CategoryResponse getAllCategories(Integer pageNumber, Integer pageSize, String sortBy, String sortDir) {
+        Sort sort = (sortDir.equalsIgnoreCase("asc")) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
 
-        List<Category> categories = this.categoryRepository.findAll();
-        List<CategoryDto> categoryDtos = categories.stream().map((cat) -> this.modelMapper.map(cat, CategoryDto.class))
+        Pageable p = PageRequest.of(pageNumber, pageSize, sort);
+
+        Page<Category> pageCategory = this.categoryRepository.findAll(p);
+
+        List<Category> allCategories = pageCategory.getContent();
+
+        List<CategoryDto> categoryDtos = allCategories.stream().map((category) -> this.modelMapper.map(category, CategoryDto.class))
                 .collect(Collectors.toList());
 
-        return categoryDtos;
+        CategoryResponse categoryResponse = new CategoryResponse();
+        categoryResponse.setContent(categoryDtos);
+        categoryResponse.setPageNumber(pageCategory.getNumber());
+        categoryResponse.setPageSize(pageCategory.getSize());
+        categoryResponse.setTotalElements(pageCategory.getTotalElements());
+        categoryResponse.setTotalPages(pageCategory.getTotalPages());
+        categoryResponse.setLastPage(pageCategory.isLast());
+
+        return categoryResponse;
     }
 }

@@ -1,9 +1,11 @@
 package co.develhope.team3.blog.controllers;
 
 
+import co.develhope.team3.blog.config.AppConstants;
 import co.develhope.team3.blog.dto.ArticleDto;
 import co.develhope.team3.blog.dto.CategoryDto;
 import co.develhope.team3.blog.payloads.CategoryDeleteResponse;
+import co.develhope.team3.blog.payloads.CategoryResponse;
 import co.develhope.team3.blog.services.CategoryService;
 import co.develhope.team3.blog.services.UtilsService;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.filter.AuthenticationContext;
@@ -75,9 +77,12 @@ public class CategoryController {
 
     @PublicEndpoint
     @GetMapping("/")
-    public ResponseEntity<List<CategoryDto>> getCategories() {
+    public ResponseEntity<CategoryResponse> getCategories(@RequestParam(value = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
+                                                           @RequestParam(value = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
+                                                           @RequestParam(value = "sortBy", defaultValue = AppConstants.SORT_BY, required = false) String sortBy,
+                                                           @RequestParam(value = "sortDir", defaultValue = AppConstants.SORT_DIR, required = false) String sortDir) {
 
-        List<CategoryDto> categories = this.categoryService.getCategories();
+        CategoryResponse categories = this.categoryService.getAllCategories(pageNumber, pageSize, sortBy, sortDir);
 
         return ResponseEntity.ok(categories);
     }

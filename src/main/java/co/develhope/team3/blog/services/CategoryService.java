@@ -1,6 +1,7 @@
 package co.develhope.team3.blog.services;
 
 import co.develhope.team3.blog.dto.CategoryDto;
+import co.develhope.team3.blog.payloads.CategoryResponse;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.filter.AuthenticationContext;
 
 import javax.security.auth.message.AuthException;
@@ -15,5 +16,5 @@ public interface CategoryService {
 
     CategoryDto deleteCategory(Long categoryId);
 
-    List<CategoryDto> getCategories();
+    CategoryResponse getAllCategories(Integer pageNumber, Integer pageSize, String sortBy, String sortDir);
 }

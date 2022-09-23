@@ -5,10 +5,10 @@ import co.develhope.team3.blog.dto.CategoryDto;
 import co.develhope.team3.blog.dto.CommentDto;
 import co.develhope.team3.blog.exceptions.ResourceNotFoundException;
 import co.develhope.team3.blog.models.*;
+
 import co.develhope.team3.blog.payloads.ArticleResponse;
 import co.develhope.team3.blog.repository.*;
 import co.develhope.team3.blog.services.ArticleService;
-import it.pasqualecavallo.studentsmaterial.authorization_framework.filter.AuthenticationContext;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,7 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 
-import javax.security.auth.message.AuthException;
+
 
 import java.util.Date;
 import java.util.List;
