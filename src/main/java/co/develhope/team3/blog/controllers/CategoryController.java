@@ -8,6 +8,7 @@ import co.develhope.team3.blog.services.CategoryService;
 import co.develhope.team3.blog.services.UtilsService;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.filter.AuthenticationContext;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.security.HierarchicalSecurity;
+import it.pasqualecavallo.studentsmaterial.authorization_framework.security.PublicEndpoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.security.auth.message.AuthException;
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/categories")
@@ -53,6 +55,7 @@ public class CategoryController {
         return new ResponseEntity<>(updateCategory, HttpStatus.GONE);
     }
 
+    @PublicEndpoint
     @GetMapping("/{categoryId}")
     public ResponseEntity<CategoryDto> getCategory(@PathVariable Long categoryId){
 
@@ -68,6 +71,15 @@ public class CategoryController {
         CategoryDto categoryDeleted = this.categoryService.deleteCategory(categoryId);
         return new ResponseEntity<CategoryDeleteResponse>(new CategoryDeleteResponse("category is deleted successfully !!", categoryDeleted),
                 HttpStatus.OK);
+    }
+
+    @PublicEndpoint
+    @GetMapping("/")
+    public ResponseEntity<List<CategoryDto>> getCategories() {
+
+        List<CategoryDto> categories = this.categoryService.getCategories();
+
+        return ResponseEntity.ok(categories);
     }
 
 }

@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import javax.security.auth.message.AuthException;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -61,5 +63,15 @@ public class CategoryServiceImpl implements CategoryService {
         this.categoryRepository.delete(category);
         return  categoryDto;
 
+    }
+
+    @Override
+    public List<CategoryDto> getCategories() {
+
+        List<Category> categories = this.categoryRepository.findAll();
+        List<CategoryDto> categoryDtos = categories.stream().map((cat) -> this.modelMapper.map(cat, CategoryDto.class))
+                .collect(Collectors.toList());
+
+        return categoryDtos;
     }
 }
