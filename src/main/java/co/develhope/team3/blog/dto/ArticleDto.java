@@ -1,5 +1,6 @@
 package co.develhope.team3.blog.dto;
 
+import co.develhope.team3.blog.models.Category;
 import co.develhope.team3.blog.models.Comment;
 import co.develhope.team3.blog.models.Tag;
 
@@ -27,7 +28,7 @@ public class ArticleDto {
     private UserDto user;
     private List<Tag> tags= new ArrayList<>();
     private List<Comment> commentDtos = new ArrayList<>();
-    private CategoryDto category;
+    private List<Category> category;
     @NotBlank(message = "è obbligatorio impostare se l'articolo dev'essere tra le news")
     private Boolean isNews;
     private String imageName;

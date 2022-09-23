@@ -42,7 +42,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Autowired
     private TagServiceImpl tagServiceImpl;
     @Autowired
-    CommentService commentService;
+    CommentServiceImpl commentService;
 
 
     @Override
@@ -50,7 +50,7 @@ public class ArticleServiceImpl implements ArticleService {
 
 
         if (!principal.getUserId().equals(userId)) {
-            throw new AuthException("Unauthorized editor, editor_id mismatch");
+            throw new AuthException("Unauthorized user, user_id mismatch");
         }
 
         User user = this.userRepository.findById(userId)
