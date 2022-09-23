@@ -42,9 +42,6 @@ public class ArticleController {
     private String path;
 
 
-
-
-
     @HierarchicalSecurity(bottomRole = "ROLE_EDITOR")
     @PostMapping("/user/{userId}/category/{categoryId}/articles")
     public ResponseEntity<ArticleDto> createArticle(@RequestBody @Valid ArticleDto articleDto,

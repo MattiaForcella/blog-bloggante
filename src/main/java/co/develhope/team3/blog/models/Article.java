@@ -38,7 +38,10 @@ public class Article {
     //@JsonMAnagedReference
     private User user = new User();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "article")
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinTable(name = "article_id",
+                joinColumns = @JoinColumn(name = "articles", referencedColumnName = "id"),
+                inverseJoinColumns = @JoinColumn(name = "tag", referencedColumnName = "id"))
     private List<Tag> tags = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "article")

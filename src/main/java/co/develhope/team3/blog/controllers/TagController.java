@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@ResponseBody
+@RequestMapping("/api/tag")
 public class TagController {
 
     @Autowired
@@ -14,10 +14,10 @@ public class TagController {
     @GetMapping("/")
     public void getArticleByTags(){}
 
-    @PostMapping("/")
+    @PostMapping("/create")
     public void createTag(){}
 
-    @PostMapping("/")
+    @PostMapping("/insert")
     public void insertTag(){}
 
     @DeleteMapping("")
