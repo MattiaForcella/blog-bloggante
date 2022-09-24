@@ -4,9 +4,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-import java.util.Date;
 
 @Entity
 @Table(name = "comments")
@@ -18,10 +15,12 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Date createdOn;
+    private Long createdOn;
 
 
     private String content;
+
+    private Integer flagged;
 
     @ManyToOne
     //@JsonManagedReference
@@ -31,6 +30,8 @@ public class Comment {
     @JoinColumn(name = "articles",referencedColumnName = "id")
     //@JsonManagedReference
     private User user;
+
+
 
 
 

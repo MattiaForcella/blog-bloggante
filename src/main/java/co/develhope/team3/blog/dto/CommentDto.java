@@ -13,7 +13,9 @@ import java.util.Set;
 @NoArgsConstructor
 public class CommentDto {
 
-    private Long id;
+
+    private Long Id;
+    //Ricordarsi di fare le converesioni per il passaggio da e in database
     private Date createdOn;
     @NotBlank(message = "il commento non puo essere vuoto")
     @Size(max = 1000, message = "il commento puo avere al massimo 1000 caratteri")
@@ -21,4 +23,7 @@ public class CommentDto {
     private ArticleDto article;
     private UserDto user;
 
+    public Date setCreateOnWithMill (Long mills){
+        this.createdOn = new Date(mills);
+    }
 }

@@ -42,7 +42,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Autowired
     private TagServiceImpl tagServiceImpl;
     @Autowired
-    CommentService commentService;
+    CommentServiceImp commentServiceImp;
 
 
     @Override
