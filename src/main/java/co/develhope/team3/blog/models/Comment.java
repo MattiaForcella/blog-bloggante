@@ -20,7 +20,7 @@ public class Comment {
 
     private String content;
 
-    private Integer flagged;
+    private Integer flag;
 
     @ManyToOne
     //@JsonManagedReference

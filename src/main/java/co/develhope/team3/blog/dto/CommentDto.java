@@ -14,16 +14,18 @@ import java.util.Set;
 public class CommentDto {
 
 
-    private Long Id;
+    private Long id;
     //Ricordarsi di fare le converesioni per il passaggio da e in database
     private Date createdOn;
     @NotBlank(message = "il commento non puo essere vuoto")
     @Size(max = 1000, message = "il commento puo avere al massimo 1000 caratteri")
     private String content;
+    private Integer flag;
     private ArticleDto article;
     private UserDto user;
 
     public Date setCreateOnWithMill (Long mills){
-        this.createdOn = new Date(mills);
+        return this.createdOn = new Date(mills);
+
     }
 }

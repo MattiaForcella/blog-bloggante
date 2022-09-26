@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import javax.security.auth.message.AuthException;
+import java.util.List;
 
 public interface CommentService {
 
@@ -15,7 +16,7 @@ public interface CommentService {
 
     ResponseEntity<CommentDto> getCommentDetails (Long id) throws  AuthException;
 
-
+    ResponseEntity<List<CommentDto>> getFlaggedComments();
 
 
 
