@@ -10,6 +10,7 @@ import it.pasqualecavallo.studentsmaterial.authorization_framework.filter.Authen
 import it.pasqualecavallo.studentsmaterial.authorization_framework.security.HierarchicalSecurity;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.security.PublicEndpoint;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.security.RoleSecurity;
+import it.pasqualecavallo.studentsmaterial.authorization_framework.security.ZeroSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -54,6 +55,14 @@ public class CommentController {
     private ResponseEntity<List<CommentDto>> getFlaggedComments (){
         return commentServiceImp.getFlaggedComments();
     }
+
+    @PublicEndpoint()
+    @GetMapping("/{articleId}/comment-list")
+    public ResponseEntity<List<CommentDto>> getAllArticleComments(@PathVariable() Long articleId){
+        return commentServiceImp.getAllArticleComments(articleId);
+
+    }
+
 
 
 }

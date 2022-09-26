@@ -47,6 +47,9 @@ public class CommentServiceImp implements CommentService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private Article article;
+
 
 
 
@@ -82,7 +85,7 @@ public class CommentServiceImp implements CommentService {
         Pageable p = PageRequest.of(Integer.parseInt(AppConstants.PAGE_NUMBER),
                 Integer.parseInt(AppConstants.PAGE_SIZE),
                 Sort.by("flag").descending());
-        Page<Comment> pageComment = this.commentRepository.findAll(p);
+        Page<Comment> pageComment = commentRepository.findAllFlaggedComments(p);
         List<Comment> allComments = pageComment.getContent();
 
         List<CommentDto> commentDtos = allComments.stream().map((comment) -> this.modelMapper.map(comment, CommentDto.class))
@@ -94,6 +97,23 @@ public class CommentServiceImp implements CommentService {
         }
         return new ResponseEntity<>(commentDtos,HttpStatus.OK);
 
+    }
+
+    @Override
+    public ResponseEntity<List<CommentDto>> getAllArticleComments(Long articleId) {
+        Pageable p = PageRequest.of(Integer.parseInt(AppConstants.PAGE_NUMBER),
+                Integer.parseInt(AppConstants.PAGE_SIZE));
+        article.setId(articleId);
+        Page<Comment> pageComment = commentRepository.findAllByArticleId(article, p);
+        List<Comment> allComments = pageComment.getContent();
+        List<CommentDto> commentDtos = allComments.stream().map((comment) -> this.modelMapper.map(comment, CommentDto.class))
+                .collect(Collectors.toList());
+        for(int i = 0; i< allComments.size(); i++){
+            Comment comment1 = allComments.get(i);
+            CommentDto commentDto = commentDtos.get(i);
+            commentDto.setCreateOnWithMill(comment1.getCreatedOn());
+        }
+        return new ResponseEntity<>(commentDtos,HttpStatus.OK);
     }
 
 

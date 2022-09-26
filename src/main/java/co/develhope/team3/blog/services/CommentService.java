@@ -19,5 +19,5 @@ public interface CommentService {
     ResponseEntity<List<CommentDto>> getFlaggedComments();
 
 
-
+    ResponseEntity<List<CommentDto>> getAllArticleComments(Long articleId);
 }
