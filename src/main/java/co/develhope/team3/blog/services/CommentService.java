@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import javax.security.auth.message.AuthException;
 import java.util.List;
 
+
 public interface CommentService {
 
     HttpStatus postComment(CommentRequest commentRequest) throws AuthException;

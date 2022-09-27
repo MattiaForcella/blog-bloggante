@@ -10,6 +10,7 @@ import it.pasqualecavallo.studentsmaterial.authorization_framework.filter.Authen
 import javax.security.auth.message.AuthException;
 import java.util.List;
 
+
 public interface ArticleService {
     ArticleDto createArticle(ArticleDto articleDto, Long userId, Long categoryId, AuthenticationContext.Principal principal) throws AuthException;
 

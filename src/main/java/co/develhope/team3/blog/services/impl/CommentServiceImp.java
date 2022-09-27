@@ -39,16 +39,12 @@ public class CommentServiceImp implements CommentService {
     @Autowired
     private ModelMapper modelMapper;
 
-    @Autowired
-    private Comment comment;
 
-    @Autowired
-    private User user;
+
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private Article article;
+
 
 
 
@@ -57,6 +53,7 @@ public class CommentServiceImp implements CommentService {
     public HttpStatus postComment(CommentRequest commentRequest) {
         AuthenticationContext.Principal principal = AuthenticationContext.get();
 
+        Comment comment = new Comment();
         Optional<Article> article = articleRepository.findById(commentRequest.getArticleId());
         if(!article.isPresent()) return HttpStatus.BAD_REQUEST;
         comment.setArticle(article.get());
@@ -65,7 +62,7 @@ public class CommentServiceImp implements CommentService {
         comment.setUser(user.get());
         comment.setContent(commentRequest.getContent());
         comment.setCreatedOn(System.currentTimeMillis());
-        commentRepository.save(comment);
+        this.commentRepository.save(comment);
         return HttpStatus.OK;
     }
 
@@ -103,8 +100,7 @@ public class CommentServiceImp implements CommentService {
     public ResponseEntity<List<CommentDto>> getAllArticleComments(Long articleId) {
         Pageable p = PageRequest.of(Integer.parseInt(AppConstants.PAGE_NUMBER),
                 Integer.parseInt(AppConstants.PAGE_SIZE));
-        article.setId(articleId);
-        Page<Comment> pageComment = commentRepository.findAllByArticleId(article, p);
+        Page<Comment> pageComment = commentRepository.findAllByArticleId(articleId, p);
         List<Comment> allComments = pageComment.getContent();
         List<CommentDto> commentDtos = allComments.stream().map((comment) -> this.modelMapper.map(comment, CommentDto.class))
                 .collect(Collectors.toList());

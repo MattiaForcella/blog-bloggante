@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 public interface CommentRepository extends JpaRepository<Comment,Long> {
 
 
-    Page<Comment> findAllByArticleId(Article article, Pageable p);
+    Page<Comment> findAllByArticleId(Long article_id, Pageable p);
 
     @Query(value = "SELECT * FROM comments WHERE flag > 0",
             countQuery = "SELECT count(*) FROM comments WHERE flag > 0 ",

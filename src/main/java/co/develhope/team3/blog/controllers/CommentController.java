@@ -62,7 +62,10 @@ public class CommentController {
         return commentServiceImp.getAllArticleComments(articleId);
 
     }
-
-
+/*
+    @HierarchicalSecurity(bottomRole = "USER_ROLE")
+    @PutMapping("/edit-comment/{id}")
+    public ResponseEntity<CommentDto> putComment
+*/
 
 }
