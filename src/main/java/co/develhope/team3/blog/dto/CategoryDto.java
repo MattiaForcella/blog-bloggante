@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -24,4 +25,6 @@ public class CategoryDto {
 
     private List<ArticleDto> articles=new ArrayList<>();
 
+    private Date createdOn;
+    private Date updateOn;
 }

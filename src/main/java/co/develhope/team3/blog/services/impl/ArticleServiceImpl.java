@@ -5,10 +5,10 @@ import co.develhope.team3.blog.dto.CategoryDto;
 import co.develhope.team3.blog.dto.CommentDto;
 import co.develhope.team3.blog.exceptions.ResourceNotFoundException;
 import co.develhope.team3.blog.models.*;
+
 import co.develhope.team3.blog.payloads.ArticleResponse;
 import co.develhope.team3.blog.repository.*;
 import co.develhope.team3.blog.services.ArticleService;
-import it.pasqualecavallo.studentsmaterial.authorization_framework.filter.AuthenticationContext;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,7 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 
-import javax.security.auth.message.AuthException;
+
 
 import java.util.Date;
 import java.util.List;
@@ -42,16 +42,11 @@ public class ArticleServiceImpl implements ArticleService {
     @Autowired
     private TagServiceImpl tagServiceImpl;
     @Autowired
-    CommentService commentService;
+    CommentServiceImpl commentService;
 
 
     @Override
-    public ArticleDto createArticle(ArticleDto articleDto, Long userId, Long categoryId, AuthenticationContext.Principal principal) throws AuthException {
-
-
-        if (!principal.getUserId().equals(userId)) {
-            throw new AuthException("Unauthorized editor, editor_id mismatch");
-        }
+    public ArticleDto createArticle(ArticleDto articleDto, Long categoryId, Long userId) {
 
         User user = this.userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "User id", userId));
@@ -130,14 +125,10 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public ArticleDto deleteArticle(Long id, AuthenticationContext.Principal principal, Long userId) throws AuthException {
+    public ArticleDto deleteArticle(Long articleId)   {
 
-        if (!principal.getUserId().equals(userId)) {
-            throw new AuthException("Unauthorized editor, editor_id mismatch");
-        }
-
-        Article article = this.articleRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Article ", "article id", id));
+        Article article = this.articleRepository.findById(articleId)
+                .orElseThrow(() -> new ResourceNotFoundException("Article ", "article id", articleId));
         ArticleDto articleDto = this.modelMapper.map(article, ArticleDto.class);
 
         this.articleRepository.delete(article);
@@ -145,11 +136,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public ArticleDto updateArticle(ArticleDto articleDto, Long articleId, Long userId, AuthenticationContext.Principal principal) throws AuthException {
-
-        if (!principal.getUserId().equals(userId)) {
-            throw new AuthException("Unauthorized editor, editor_id mismatch");
-        }
+    public ArticleDto updateArticle(ArticleDto articleDto, Long articleId)   {
 
         Article article = this.articleRepository.findById(articleId)
                 .orElseThrow(()-> new ResourceNotFoundException("Article", "article id", articleId));
@@ -162,11 +149,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public ArticleDto updateTitleArticle(Long articleId, Long userId, AuthenticationContext.Principal principal, String title) throws AuthException {
-
-        if (!principal.getUserId().equals(userId)) {
-            throw new AuthException("Unauthorized editor, editor_id mismatch");
-        }
+    public ArticleDto updateTitleArticle(Long articleId, String title)   {
 
         Article article = this.articleRepository.findById(articleId)
                 .orElseThrow(()-> new ResourceNotFoundException("Article", "article id", articleId));
@@ -174,62 +157,50 @@ public class ArticleServiceImpl implements ArticleService {
 
         article.setUpdateOn(new Date());
         Article updateArticle = this.articleRepository.save(article);
+
         return this.modelMapper.map(updateArticle,ArticleDto.class);
     }
 
     @Override
-    public ArticleDto updateContentArticle(Long articleId, String content, Long userId, AuthenticationContext.Principal principal) throws AuthException {
+    public ArticleDto updateContentArticle(Long articleId, String content) {
 
-        if (!principal.getUserId().equals(userId)) {
-            throw new AuthException("Unauthorized editor, editor_id mismatch");
-        }
         Article article = this.articleRepository.findById(articleId)
                 .orElseThrow(()-> new ResourceNotFoundException("Article", "article id", articleId));
         article.setContent(content);
 
         article.setUpdateOn(new Date());
         Article updateArticle = this.articleRepository.save(article);
+
         return this.modelMapper.map(updateArticle, ArticleDto.class);
     }
 
     @Override
-    public ArticleDto updateNewsArticle(Long articleId, Long userId, Boolean news, AuthenticationContext.Principal principal) throws AuthException {
-
-        if (!principal.getUserId().equals(userId)) {
-            throw new AuthException("Unauthorized editor, editor_id mismatch");
-        }
+    public ArticleDto updateNewsArticle(Long articleId, Boolean news) {
 
         Article article = this.articleRepository.findById(articleId)
                 .orElseThrow(()-> new ResourceNotFoundException("Article", "article id", articleId));
         article.setIsNews(news);
-
         article.setUpdateOn(new Date());
         Article updateArticle = this.articleRepository.save(article);
+
         return this.modelMapper.map(updateArticle, ArticleDto.class);
     }
 
     @Override
-    public ArticleDto updateTagsArticle(Long articleId, Long userId, List<Tag> tags, AuthenticationContext.Principal principal) throws AuthException {
-
-        if (!principal.getUserId().equals(userId)) {
-            throw new AuthException("Unauthorized editor, editor_id mismatch");
-        }
+    public ArticleDto updateTagsArticle(Long articleId, List<Tag> tags )   {
 
         Article article = this.articleRepository.findById(articleId)
                 .orElseThrow(()-> new ResourceNotFoundException("Article", "article id", articleId));
-
         article.setTags(tags);
         article.setUpdateOn(new Date());
+
         articleRepository.save(article);
+
         return this.modelMapper.map(article,ArticleDto.class);
     }
 
     @Override
-    public ArticleDto updateCommentArticle(Long articleId, Long userId, CommentDto commentDto, AuthenticationContext.Principal principal) throws AuthException {
-
-        if (!principal.getUserId().equals(userId)) {
-            throw new AuthException("Unauthorized user, user_id mismatch");
-        }
+    public ArticleDto updateCommentArticle(Long articleId , CommentDto commentDto )  {
 
         Article article = this.articleRepository.findById(articleId)
                 .orElseThrow(()-> new ResourceNotFoundException("Article", "article id", articleId));
@@ -241,18 +212,16 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public ArticleDto updateCategoriesArticle(AuthenticationContext.Principal principal, Long articleId, Long userId, CategoryDto categoryDto) throws AuthException {
-
-        if (!principal.getUserId().equals(userId)) {
-            throw new AuthException("Unauthorized editor, editor_id mismatch");
-        }
+    public ArticleDto updateCategoriesArticle( Long articleId, CategoryDto categoryDto)   {
 
         Article article = this.articleRepository.findById(articleId)
                 .orElseThrow(()-> new ResourceNotFoundException("Article", "article id", articleId));
+
         Category categoryUpdate = this.modelMapper.map(categoryDto, Category.class);
         article.setCategory(categoryUpdate);
         article.setUpdateOn(new Date());
         articleRepository.save(article);
+
         return this.modelMapper.map(article,ArticleDto.class);
     }
 
