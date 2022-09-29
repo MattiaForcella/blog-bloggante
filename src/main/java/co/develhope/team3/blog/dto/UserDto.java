@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -28,6 +29,9 @@ public class UserDto {
     private String email;
 
     private String about;
+
+    @Size(max = 150)
+    private String password;
 
 
     private List<ArticleDto> articleDtos = new ArrayList<>();

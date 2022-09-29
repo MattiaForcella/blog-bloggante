@@ -4,12 +4,16 @@ import co.develhope.team3.blog.dto.TagDto;
 import co.develhope.team3.blog.models.Article;
 import co.develhope.team3.blog.payloads.TagRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import java.util.List;
 
 public interface TagService {
 
-    TagDto getArticleByTags(String name, Article article);
 
-    HttpStatus createTag (TagRequest tagRequest);
+    ResponseEntity<List<TagDto>> getTagsLike(String name);
 
-    TagDto deleteTag (Long id, String name);
+    ResponseEntity<Void> createTag (TagRequest tagRequest);
+
+    TagDto deleteTag(Long id);
 }
