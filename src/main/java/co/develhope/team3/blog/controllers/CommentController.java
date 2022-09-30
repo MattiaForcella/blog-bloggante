@@ -1,6 +1,7 @@
 package co.develhope.team3.blog.controllers;
 
 import co.develhope.team3.blog.config.AppConstants;
+import co.develhope.team3.blog.dto.ArticleDto;
 import co.develhope.team3.blog.dto.CommentDto;
 import co.develhope.team3.blog.models.Article;
 import co.develhope.team3.blog.models.Comment;
@@ -62,10 +63,19 @@ public class CommentController {
         return commentServiceImp.getAllArticleComments(articleId);
 
     }
-/*
+
     @HierarchicalSecurity(bottomRole = "USER_ROLE")
-    @PutMapping("/edit-comment/{id}")
-    public ResponseEntity<CommentDto> putComment
-*/
+    @PutMapping("/edit-comment")
+    public ResponseEntity<CommentDto> putComment (@RequestBody @Valid CommentDto commentDto){
+        return commentServiceImp.putComment(commentDto);
+
+    }
+
+    @HierarchicalSecurity(bottomRole = "USER_ROLE")
+    @DeleteMapping("/api/rule/delete-comment/{id}" )
+    public ResponseEntity<CommentDto> deleteComment(@PathVariable Long comment_id){
+        return commentServiceImp.deleteComment(comment_id);
+    }
+
 
 }

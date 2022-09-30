@@ -112,5 +112,32 @@ public class CommentServiceImp implements CommentService {
         return new ResponseEntity<>(commentDtos,HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<CommentDto> putComment(CommentDto commentDto) {
+        AuthenticationContext.Principal principal = AuthenticationContext.get();
+        if(!principal.getUserId().equals(commentDto.getUser().getId()))
+            return new ResponseEntity<>(null,HttpStatus.FORBIDDEN);
+        Long data = commentDto.getCreatedOn().getTime();
+        Comment comment = modelMapper.map(commentDto, Comment.class);
+        commentRepository.save(comment);
+
+        return new ResponseEntity<>(commentDto,HttpStatus.OK);
+
+    }
+
+    @Override
+    public ResponseEntity<CommentDto> deleteComment(Long comment_id) {
+        Optional<Comment> comment = Optional.of(commentRepository.getReferenceById(comment_id));
+        if(!comment.isPresent())
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        AuthenticationContext.Principal principal = AuthenticationContext.get();
+        if((comment.get().getId() != principal.getUserId()) || !principal.getRoles().contains("ROLE_ADMIN") )
+            return  new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
+        commentRepository.delete(comment.get());
+        CommentDto commentDto = modelMapper.map(comment, CommentDto.class);
+        return new ResponseEntity<>(commentDto,HttpStatus.OK);
+
+    }
+
 
 }

@@ -21,4 +21,8 @@ public interface CommentService {
 
 
     ResponseEntity<List<CommentDto>> getAllArticleComments(Long articleId);
+
+    ResponseEntity<CommentDto> putComment(CommentDto commentDto);
+
+    ResponseEntity<CommentDto> deleteComment(Long comment_id);
 }
