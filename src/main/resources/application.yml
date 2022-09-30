@@ -2,9 +2,9 @@ server:
   port: 5050
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/springblog?enabledTLSProtocols=TLSv1.2
+    url: jdbc:mysql://localhost:3306/mydbprova
     username: root
-    password: peppino99
+    password: qwerty
     driver-class-name: com.mysql.cj.jdbc.Driver
     initialize: true
   jpa:

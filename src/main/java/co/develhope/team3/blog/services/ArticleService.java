@@ -12,7 +12,7 @@ import java.util.List;
 
 
 public interface ArticleService {
-    ArticleDto createArticle(ArticleDto articleDto, Long userId, Long categoryId, AuthenticationContext.Principal principal) throws AuthException;
+    ArticleDto createArticle(ArticleDto articleDto, Long categoryId, Long userId) ;
 
     List<ArticleDto> getArticleByUser(Long id);
 
@@ -22,25 +22,25 @@ public interface ArticleService {
 
     ArticleDto getArticleById(Long id);
 
-    ArticleDto deleteArticle(Long id, AuthenticationContext.Principal principal, Long userId) throws AuthException;
+    ArticleDto deleteArticle(Long articleId) ;
 
-    ArticleDto updateArticle(ArticleDto articleDto, Long articleId, Long userId, AuthenticationContext.Principal principal) throws AuthException;
-
-
-
-    ArticleDto updateTitleArticle(Long articleId, Long userId, AuthenticationContext.Principal principal, String title) throws AuthException;
+    ArticleDto updateArticle(ArticleDto articleDto, Long articleId)  ;
 
 
-    ArticleDto updateContentArticle(Long articleId, String content, Long userId, AuthenticationContext.Principal principal) throws AuthException;
 
-    ArticleDto updateNewsArticle(Long articleId, Long userId, Boolean news, AuthenticationContext.Principal principal) throws AuthException;
-
-    ArticleDto updateTagsArticle(Long articleId, Long userId, List<Tag> tags, AuthenticationContext.Principal principal) throws AuthException;
-
-    ArticleDto updateCommentArticle(Long articleId, Long userId, CommentDto commentId, AuthenticationContext.Principal principal) throws AuthException;
+    ArticleDto updateTitleArticle(Long articleId, String title);
 
 
-    ArticleDto updateCategoriesArticle(AuthenticationContext.Principal principal, Long articleId, Long userId, CategoryDto categoryDto) throws AuthException;
+    ArticleDto updateContentArticle(Long articleId, String content)  ;
+
+    ArticleDto updateNewsArticle(Long articleId, Boolean news)  ;
+
+    ArticleDto updateTagsArticle(Long articleId, List<Tag> tags )  ;
+
+    ArticleDto updateCommentArticle(Long articleId, CommentDto commentId )  ;
+
+
+    ArticleDto updateCategoriesArticle (Long articleId, CategoryDto categoryDto) ;
 
     List<ArticleDto> searchPosts(String keywords);
 }

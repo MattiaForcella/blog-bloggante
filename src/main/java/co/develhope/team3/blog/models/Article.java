@@ -52,7 +52,4 @@ public class Article {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
-
-
-
 }
