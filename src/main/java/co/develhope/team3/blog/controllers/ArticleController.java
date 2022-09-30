@@ -9,7 +9,7 @@ import co.develhope.team3.blog.payloads.ArticleResponse;
 import co.develhope.team3.blog.payloads.ArticleDeleteResponse;
 import co.develhope.team3.blog.services.ArticleService;
 import co.develhope.team3.blog.services.FileService;
-import co.develhope.team3.blog.services.UtilsService;
+import co.develhope.team3.blog.services.impl.ArticleServiceImpl;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.filter.AuthenticationContext;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.security.HierarchicalSecurity;
 import it.pasqualecavallo.studentsmaterial.authorization_framework.security.PublicEndpoint;

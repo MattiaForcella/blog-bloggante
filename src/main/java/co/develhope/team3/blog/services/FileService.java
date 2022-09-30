@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+
 public interface FileService {
     String uploadImage(String path, MultipartFile image, AuthenticationContext.Principal principal, Long userId) throws IOException, AuthException;
 
