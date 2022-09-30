@@ -24,14 +24,14 @@ public class Comment {
     private Integer flag;
 
     @ManyToOne
-    @JoinColumn(name = "article_id", referencedColumnName = "id")
+    @JoinColumn(name = "article_id", referencedColumnName = "id", nullable = false)
     //@JsonManagedReference
-    private Article article;
+    private Article article = new Article();
 
     @ManyToOne
-    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    @JoinColumn(name = "user_id",referencedColumnName = "id", nullable = false)
     //@JsonManagedReference
-    private User user;
+    private User user = new User();
 
 
 

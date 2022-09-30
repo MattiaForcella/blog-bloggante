@@ -35,18 +35,19 @@ public class Article {
     private String imageName;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     //@JsonMAnagedReference
     private User user = new User();
 
     @ManyToMany(cascade = CascadeType.MERGE)
-    @JoinTable(name = "article_id",
-                joinColumns = @JoinColumn(name = "articles", referencedColumnName = "id"),
-                inverseJoinColumns = @JoinColumn(name = "tag", referencedColumnName = "id"))
+    @JoinTable(name = "article_tag",
+                joinColumns = @JoinColumn(name = "article_id", referencedColumnName = "id"),
+                inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id"))
     private List<Tag> tags = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "article")
     //@JsonBackReference
-    private List<Comment> comments=new ArrayList<>();
+    private List<Comment> comments = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "category_id")
