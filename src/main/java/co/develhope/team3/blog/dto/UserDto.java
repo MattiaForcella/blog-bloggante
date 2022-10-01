@@ -28,6 +28,7 @@ public class UserDto {
     @NotEmpty(message = "il campo email non puo essere vuoto")
     private String email;
 
+    @Size(max = 500)
     private String about;
 
     @Size(max = 150)
