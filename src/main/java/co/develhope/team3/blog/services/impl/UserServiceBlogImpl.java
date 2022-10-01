@@ -36,7 +36,13 @@ public class UserServiceBlogImpl implements UserServiceBlog {
     @Override
     public ResponseEntity<Void> putAbout(UserRequest userRequest, Long id) {
         AuthenticationContext.Principal principal = AuthenticationContext.get();
-        //TODO continuare da dove lasciato
-        return null;
+        Optional<User> user = userRepository.findById(id);
+        if(!user.isPresent())
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        if(principal.getUserId() != user.get().getId())
+            return  new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
+        user.get().setAbout(userRequest.getAbout());
+        userRepository.save(user.get());
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 }
