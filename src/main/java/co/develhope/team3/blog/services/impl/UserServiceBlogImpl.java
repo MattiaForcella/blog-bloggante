@@ -82,4 +82,23 @@ public class UserServiceBlogImpl implements UserServiceBlog {
         }
         return new ResponseEntity<>(null,HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<Void> removeRole(String role, Long userId) {
+        Optional<User> user = userRepository.findById(userId);
+        if(!user.isPresent())
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        Optional<Role> role1 = Optional.ofNullable(roleRepository.findByName(role));
+        if(!role1.isPresent())
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        else if(user.get().getRoles().contains(role1.get().getRole())){
+            user.get().removeRole(role1.get());
+            role1.get().removeUser(user.get());
+            roleRepository.save(role1.get());
+            userRepository.save(user.get());
+        }
+        return new ResponseEntity<>(null,HttpStatus.OK);
+    }
+
 }
+

@@ -14,4 +14,6 @@ public interface UserServiceBlog {
     ResponseEntity<Void> putAbout(UserRequest userRequest, Long id);
 
     ResponseEntity<Void> addRole(String role, Long id);
+
+    ResponseEntity<Void> removeRole(String role, Long userId);
 }

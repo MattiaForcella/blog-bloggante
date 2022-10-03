@@ -65,5 +65,7 @@ public class User {
     }
 
 
-
+    public void removeRole(Role role) {
+        roles.remove(role);
+    }
 }

@@ -45,6 +45,12 @@ public class UserController {
             return userServiceBlog.addRole(role,id);
     }
 
+    @RoleSecurity(value = { "ROLE_ADMIN" })
+    @PutMapping("/remove-role/{id}")
+    public ResponseEntity<Void> removeRole(@RequestBody String role, @PathVariable Long userId ) {
+        return userServiceBlog.removeRole(role,userId);
+    }
+
 
 
     }
