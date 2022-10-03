@@ -23,6 +23,7 @@ public class CategoryDto {
     @Size(min = 10, message = "min size of category description is 10 chars")
     private String description;
 
+
     private List<ArticleDto> articles=new ArrayList<>();
 
     private Date createdOn;

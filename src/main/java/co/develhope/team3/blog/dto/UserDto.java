@@ -34,6 +34,7 @@ public class UserDto {
     @Size(max = 150)
     private String password;
 
+    private Boolean ban;
 
     private List<ArticleDto> articleDtos = new ArrayList<>();
     private List<CommentDto> commentDtos = new ArrayList<>();

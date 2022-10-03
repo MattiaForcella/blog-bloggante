@@ -36,6 +36,10 @@ public class User {
 
     private String about;
 
+    private Boolean ban;
+
+
+
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     //@JsonBackReference
     private List<Article> articles = new ArrayList<>();
@@ -51,11 +55,15 @@ public class User {
     )
     private List<Role> roles = new ArrayList<>();
 
+    public void setRole(Role role){
+        roles.add(role);
+    }
     @Override
     public String toString() {
 
         return String.format("%s email: %s --- ID: %d", username, email, id);
     }
+
 
 
 }

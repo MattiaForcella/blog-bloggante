@@ -22,4 +22,7 @@ public class Role {
     private List<User> users = new ArrayList<>();
 
 
+    public void setUser(User user) {
+        users.add(user);
+    }
 }
