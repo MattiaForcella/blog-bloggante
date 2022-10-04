@@ -3,6 +3,7 @@ package co.develhope.team3.blog.services.impl;
 import co.develhope.team3.blog.dto.ArticleDto;
 import co.develhope.team3.blog.dto.CategoryDto;
 import co.develhope.team3.blog.dto.CommentDto;
+import co.develhope.team3.blog.dto.UserDto;
 import co.develhope.team3.blog.exceptions.ResourceNotFoundException;
 import co.develhope.team3.blog.models.*;
 
@@ -15,13 +16,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 
-
-
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -233,6 +236,27 @@ public class ArticleServiceImpl implements ArticleService {
         return postDtos;
     }
 
+    @Override
+    public ResponseEntity<List<ArticleDto>> getAllArticlesByIsNews() {
+        List<Article> articles = articleRepository.findByIsNews();
+        List<ArticleDto> articleDtos = new ArrayList<>();
+        for (Article article: articles){
+            ArticleDto articleDto = new ArticleDto();
+            articleDto.setId(article.getId());
+            articleDto.setIsNews(article.getIsNews());
+            articleDto.setTags(article.getTags());
+            articleDto.setCategory((List<Category>) article.getCategory());
+            UserDto userDto = modelMapper.map(article.getUser(), UserDto.class);
+            articleDto.setUser(userDto);
+            articleDto.setTitle(article.getTitle());
+            articleDto.setCreatedOn(article.getCreatedOn());
+            articleDto.setUpdateOn(article.getUpdateOn());
+            articleDto.setImageName(article.getImageName());
+
+            articleDtos.add(articleDto);
+        }
+        return new ResponseEntity<>(articleDtos,HttpStatus.OK);
+    }
 
 
 }

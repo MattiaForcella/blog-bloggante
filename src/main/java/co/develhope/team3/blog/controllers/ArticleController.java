@@ -229,5 +229,10 @@ public class ArticleController {
 
     }
 
+    @PublicEndpoint
+    @GetMapping("/home")
+    public ResponseEntity<List<ArticleDto>> getNewArticles(){
+        return articleService.getAllArticlesByIsNews();
+    }
 
 }

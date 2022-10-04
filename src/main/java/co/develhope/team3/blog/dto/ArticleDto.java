@@ -29,7 +29,7 @@ public class ArticleDto {
     private UserDto user;
     private List<Tag> tags= new ArrayList<>();
     private List<Comment> commentDtos = new ArrayList<>();
-    private List<Category> category;
+    private List<Category> category = new ArrayList<>();
     @NotBlank(message = "è obbligatorio impostare se l'articolo dev'essere tra le news")
     private Boolean isNews;
     private String imageName;
