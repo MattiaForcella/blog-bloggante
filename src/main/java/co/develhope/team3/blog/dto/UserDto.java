@@ -28,11 +28,13 @@ public class UserDto {
     @NotEmpty(message = "il campo email non puo essere vuoto")
     private String email;
 
+    @Size(max = 500)
     private String about;
 
     @Size(max = 150)
     private String password;
 
+    private Boolean ban;
 
     private List<ArticleDto> articleDtos = new ArrayList<>();
     private List<CommentDto> commentDtos = new ArrayList<>();
