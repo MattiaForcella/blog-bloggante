@@ -5,6 +5,7 @@ import co.develhope.team3.blog.dto.UserDto;
 import co.develhope.team3.blog.payloads.UserRequest;
 import org.springframework.http.ResponseEntity;
 
+
 public interface UserServiceBlog {
 
     ResponseEntity<Void> banUser(Boolean ban, Long id);

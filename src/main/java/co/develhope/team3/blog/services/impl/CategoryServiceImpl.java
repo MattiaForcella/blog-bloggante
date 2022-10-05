@@ -6,7 +6,6 @@ import co.develhope.team3.blog.models.Category;
 import co.develhope.team3.blog.payloads.CategoryResponse;
 import co.develhope.team3.blog.repository.CategoryRepository;
 import co.develhope.team3.blog.services.CategoryService;
-import co.develhope.team3.blog.services.UtilsService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,8 +24,11 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryRepository categoryRepository;
     @Autowired
     private ModelMapper modelMapper;
+    /*
     @Autowired
     private UtilsService utilsService;
+
+     */
 
     @Override
     public CategoryDto createCategory(CategoryDto categoryDto) {

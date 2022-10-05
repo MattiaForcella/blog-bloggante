@@ -1,6 +1,6 @@
+/*
 package co.develhope.team3.blog.services;
 
-import it.pasqualecavallo.studentsmaterial.authorization_framework.filter.AuthenticationContext;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.security.auth.message.AuthException;
@@ -14,3 +14,5 @@ public interface FileService {
 
     InputStream getResource(String path, String fileName) throws FileNotFoundException;
 }
+
+ */

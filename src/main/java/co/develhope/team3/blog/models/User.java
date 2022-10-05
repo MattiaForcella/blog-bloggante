@@ -36,7 +36,7 @@ public class User {
 
     private String about;
 
-    private Boolean ban;
+    private Boolean ban = false;
 
 
 

@@ -1,17 +1,14 @@
 package co.develhope.team3.blog.services.impl;
 
 import co.develhope.team3.blog.config.AppConstants;
-import co.develhope.team3.blog.dto.ArticleDto;
 import co.develhope.team3.blog.dto.CommentDto;
 import co.develhope.team3.blog.models.Article;
 import co.develhope.team3.blog.models.Comment;
-import co.develhope.team3.blog.models.User;
 import co.develhope.team3.blog.payloads.CommentRequest;
 import co.develhope.team3.blog.repository.ArticleRepository;
 import co.develhope.team3.blog.repository.CommentRepository;
 import co.develhope.team3.blog.repository.UserRepository;
 import co.develhope.team3.blog.services.CommentService;
-import it.pasqualecavallo.studentsmaterial.authorization_framework.filter.AuthenticationContext;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,7 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.security.auth.message.AuthException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -51,15 +47,20 @@ public class CommentServiceImp implements CommentService {
 
     @Override
     public HttpStatus postComment(CommentRequest commentRequest) {
-        AuthenticationContext.Principal principal = AuthenticationContext.get();
+
+
+        //AuthenticationContext.Principal principal = AuthenticationContext.get();
 
         Comment comment = new Comment();
         Optional<Article> article = articleRepository.findById(commentRequest.getArticleId());
         if(!article.isPresent()) return HttpStatus.BAD_REQUEST;
         comment.setArticle(article.get());
+        /*
         Optional<User> user = userRepository.findById(principal.getUserId());
         if(!user.isPresent()) return HttpStatus.UNAUTHORIZED;
         comment.setUser(user.get());
+
+         */
         comment.setContent(commentRequest.getContent());
         comment.setCreatedOn(System.currentTimeMillis());
         this.commentRepository.save(comment);
@@ -114,9 +115,12 @@ public class CommentServiceImp implements CommentService {
 
     @Override
     public ResponseEntity<CommentDto> putComment(CommentDto commentDto) {
+        /*
         AuthenticationContext.Principal principal = AuthenticationContext.get();
         if(!principal.getUserId().equals(commentDto.getUser().getId()))
             return new ResponseEntity<>(null,HttpStatus.FORBIDDEN);
+
+         */
         Long data = commentDto.getCreatedOn().getTime();
         Comment comment = modelMapper.map(commentDto, Comment.class);
         commentRepository.save(comment);
@@ -128,11 +132,14 @@ public class CommentServiceImp implements CommentService {
     @Override
     public ResponseEntity<CommentDto> deleteComment(Long comment_id) {
         Optional<Comment> comment = Optional.of(commentRepository.getReferenceById(comment_id));
+        /*
         if(!comment.isPresent())
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         AuthenticationContext.Principal principal = AuthenticationContext.get();
         if((comment.get().getId() != principal.getUserId()) || !principal.getRoles().contains("ROLE_ADMIN") )
             return  new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
+
+         */
         commentRepository.delete(comment.get());
         CommentDto commentDto = modelMapper.map(comment, CommentDto.class);
         return new ResponseEntity<>(commentDto,HttpStatus.OK);

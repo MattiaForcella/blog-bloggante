@@ -5,10 +5,8 @@ import co.develhope.team3.blog.dto.CategoryDto;
 import co.develhope.team3.blog.dto.CommentDto;
 import co.develhope.team3.blog.models.Tag;
 import co.develhope.team3.blog.payloads.ArticleResponse;
-import it.pasqualecavallo.studentsmaterial.authorization_framework.filter.AuthenticationContext;
 import org.springframework.http.ResponseEntity;
 
-import javax.security.auth.message.AuthException;
 import java.util.List;
 
 

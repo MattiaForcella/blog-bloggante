@@ -1,24 +1,56 @@
+
 package co.develhope.team3.blog.services.impl;
 
+import co.develhope.team3.blog.dto.UserDto;
+import co.develhope.team3.blog.payloads.UserRequest;
+import co.develhope.team3.blog.services.UserServiceBlog;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+/*
 import co.develhope.team3.blog.dto.UserDto;
 import co.develhope.team3.blog.models.Role;
 import co.develhope.team3.blog.models.User;
 import co.develhope.team3.blog.payloads.UserRequest;
 import co.develhope.team3.blog.repository.RoleRepository;
 import co.develhope.team3.blog.repository.UserRepository;
-import co.develhope.team3.blog.services.UserServiceBlog;
-import it.pasqualecavallo.studentsmaterial.authorization_framework.filter.AuthenticationContext;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
+
 
 import java.util.Optional;
 
-
+*/
 @Service
 public class UserServiceBlogImpl implements UserServiceBlog {
+    @Override
+    public ResponseEntity<Void> banUser(Boolean ban, Long id) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<UserDto> getProfile(Long id) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<Void> putAbout(UserRequest userRequest, Long id) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<Void> addRole(String role, Long id) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<Void> removeRole(String role, Long userId) {
+        return null;
+    }
+}
+    /*
     @Autowired
     private UserRepository userRepository;
 
@@ -43,6 +75,7 @@ public class UserServiceBlogImpl implements UserServiceBlog {
     }
 
     public ResponseEntity<UserDto> getProfile(Long id) {
+
         AuthenticationContext.Principal principal = AuthenticationContext.get();
         Optional<User> user = userRepository.findById(id);
         if(!user.isPresent())
@@ -101,4 +134,6 @@ public class UserServiceBlogImpl implements UserServiceBlog {
     }
 
 }
+
+ */
 
