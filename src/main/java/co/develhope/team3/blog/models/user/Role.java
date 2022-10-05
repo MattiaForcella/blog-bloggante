@@ -15,7 +15,7 @@ public class Role {
 
     @Enumerated(EnumType.STRING)
     @Column
-    private RoleName roleName;
+    private RoleName name;
 
     /*@TODO
     //Codice aggiunto per rispecchiare i vincoli di partecipazione

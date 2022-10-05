@@ -40,8 +40,8 @@ debug: true
 project:
   image: images/
 
-authframework:
+app:
   jwt:
-    hskey: KTlgvPcXbnLoYl6b5Ma1oG294dGoZ+fyxBqJiBjQjVo=
-    token-ttl: 86400000
+    key: KTlgvPcXbnLoYl6b5Ma1oG294dGoZ+fyxBqJiBjQjVo=
+    time: 86400000
 
