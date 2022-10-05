@@ -2,16 +2,16 @@
 package co.develhope.team3.blog.services.impl;
 
 import co.develhope.team3.blog.dto.UserDto;
-import co.develhope.team3.blog.payloads.UserRequest;
+import co.develhope.team3.blog.payloads.request.UserRequest;
 import co.develhope.team3.blog.services.UserServiceBlog;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 /*
 import co.develhope.team3.blog.dto.UserDto;
-import co.develhope.team3.blog.models.Role;
-import co.develhope.team3.blog.models.User;
-import co.develhope.team3.blog.payloads.UserRequest;
+import co.develhope.team3.blog.models.user.Role;
+import co.develhope.team3.blog.models.user.User;
+import co.develhope.team3.blog.payloads.request.UserRequest;
 import co.develhope.team3.blog.repository.RoleRepository;
 import co.develhope.team3.blog.repository.UserRepository;
 import org.modelmapper.ModelMapper;

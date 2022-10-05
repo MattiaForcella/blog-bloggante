@@ -4,7 +4,7 @@ import co.develhope.team3.blog.dto.ArticleDto;
 import co.develhope.team3.blog.dto.CategoryDto;
 import co.develhope.team3.blog.dto.CommentDto;
 import co.develhope.team3.blog.models.Tag;
-import co.develhope.team3.blog.payloads.ArticleResponse;
+import co.develhope.team3.blog.payloads.response.ArticleResponse;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;

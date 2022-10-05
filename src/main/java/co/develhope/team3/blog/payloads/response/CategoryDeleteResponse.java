@@ -1,4 +1,4 @@
-package co.develhope.team3.blog.payloads;
+package co.develhope.team3.blog.payloads.response;
 
 import co.develhope.team3.blog.dto.ArticleDto;
 import co.develhope.team3.blog.dto.CategoryDto;

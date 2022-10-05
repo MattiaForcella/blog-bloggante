@@ -1,5 +1,6 @@
 package co.develhope.team3.blog.dto;
 
+import co.develhope.team3.blog.models.user.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,6 +39,6 @@ public class UserDto {
 
     private List<ArticleDto> articleDtos = new ArrayList<>();
     private List<CommentDto> commentDtos = new ArrayList<>();
-    private List<UserRoleDto> roles = new ArrayList<>();
+    private List<Role> roles = new ArrayList<>();
 
 }

@@ -1,7 +1,7 @@
 package co.develhope.team3.blog.services;
 
 import co.develhope.team3.blog.dto.CommentDto;
-import co.develhope.team3.blog.payloads.CommentRequest;
+import co.develhope.team3.blog.payloads.request.CommentRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 

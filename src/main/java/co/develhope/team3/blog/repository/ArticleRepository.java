@@ -2,7 +2,7 @@ package co.develhope.team3.blog.repository;
 
 import co.develhope.team3.blog.models.Article;
 import co.develhope.team3.blog.models.Category;
-import co.develhope.team3.blog.models.User;
+import co.develhope.team3.blog.models.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

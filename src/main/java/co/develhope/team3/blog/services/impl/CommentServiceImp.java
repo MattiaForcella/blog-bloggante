@@ -4,7 +4,7 @@ import co.develhope.team3.blog.config.AppConstants;
 import co.develhope.team3.blog.dto.CommentDto;
 import co.develhope.team3.blog.models.Article;
 import co.develhope.team3.blog.models.Comment;
-import co.develhope.team3.blog.payloads.CommentRequest;
+import co.develhope.team3.blog.payloads.request.CommentRequest;
 import co.develhope.team3.blog.repository.ArticleRepository;
 import co.develhope.team3.blog.repository.CommentRepository;
 import co.develhope.team3.blog.repository.UserRepository;

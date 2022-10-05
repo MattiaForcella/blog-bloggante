@@ -7,7 +7,8 @@ import co.develhope.team3.blog.dto.UserDto;
 import co.develhope.team3.blog.exceptions.ResourceNotFoundException;
 import co.develhope.team3.blog.models.*;
 
-import co.develhope.team3.blog.payloads.ArticleResponse;
+import co.develhope.team3.blog.models.user.User;
+import co.develhope.team3.blog.payloads.response.ArticleResponse;
 import co.develhope.team3.blog.repository.*;
 import co.develhope.team3.blog.services.ArticleService;
 import org.modelmapper.ModelMapper;
@@ -24,7 +25,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

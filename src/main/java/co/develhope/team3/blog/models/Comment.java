@@ -1,5 +1,6 @@
 package co.develhope.team3.blog.models;
 
+import co.develhope.team3.blog.models.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

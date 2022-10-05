@@ -1,11 +1,10 @@
 package co.develhope.team3.blog.models;
 
+import co.develhope.team3.blog.models.user.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.util.*;
 
 

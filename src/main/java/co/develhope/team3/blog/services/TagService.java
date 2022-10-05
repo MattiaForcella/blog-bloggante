@@ -1,9 +1,7 @@
 package co.develhope.team3.blog.services;
 
 import co.develhope.team3.blog.dto.TagDto;
-import co.develhope.team3.blog.models.Article;
-import co.develhope.team3.blog.payloads.TagRequest;
-import org.springframework.http.HttpStatus;
+import co.develhope.team3.blog.payloads.request.TagRequest;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;

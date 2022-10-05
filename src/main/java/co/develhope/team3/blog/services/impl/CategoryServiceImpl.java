@@ -3,7 +3,7 @@ package co.develhope.team3.blog.services.impl;
 import co.develhope.team3.blog.dto.CategoryDto;
 import co.develhope.team3.blog.exceptions.ResourceNotFoundException;
 import co.develhope.team3.blog.models.Category;
-import co.develhope.team3.blog.payloads.CategoryResponse;
+import co.develhope.team3.blog.payloads.response.CategoryResponse;
 import co.develhope.team3.blog.repository.CategoryRepository;
 import co.develhope.team3.blog.services.CategoryService;
 import org.modelmapper.ModelMapper;

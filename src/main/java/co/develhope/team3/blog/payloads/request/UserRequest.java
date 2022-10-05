@@ -1,4 +1,4 @@
-package co.develhope.team3.blog.payloads;
+package co.develhope.team3.blog.payloads.request;
 
 import lombok.*;
 

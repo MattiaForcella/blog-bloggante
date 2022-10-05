@@ -3,7 +3,7 @@ package co.develhope.team3.blog.services.impl;
 import co.develhope.team3.blog.dto.TagDto;
 import co.develhope.team3.blog.exceptions.ResourceNotFoundException;
 import co.develhope.team3.blog.models.Tag;
-import co.develhope.team3.blog.payloads.TagRequest;
+import co.develhope.team3.blog.payloads.request.TagRequest;
 import co.develhope.team3.blog.repository.TagRepository;
 import co.develhope.team3.blog.services.TagService;
 import org.modelmapper.ModelMapper;
