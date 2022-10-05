@@ -25,7 +25,7 @@ public class Article {
     @Column(nullable = false, length = 100000000)
     private String content;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "is_news")
     private Boolean isNews;
 
     private Date createdOn;

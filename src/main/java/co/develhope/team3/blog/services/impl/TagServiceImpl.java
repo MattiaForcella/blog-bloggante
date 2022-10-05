@@ -27,7 +27,7 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public ResponseEntity<List<TagDto>> getTagsLike(String name) {
-        List<Tag> tagList2 = this.tagRepository.findAllByNameLike("%" + name + "%");
+        List<Tag> tagList2 = this.tagRepository.findAllByName("%" + name + "%");
         /*Optional<List<Tag>> tagList = Optional.ofNullable(tagRepository.findAllByName(name));
         if(!tagList.isPresent()) return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);*/
         List<TagDto> tagDto1 = tagList2.stream().

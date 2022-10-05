@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-
+@Repository
 public interface ArticleRepository extends JpaRepository<Article,Long> {
 
     List<Article> findByUser(User user);
@@ -19,7 +19,7 @@ public interface ArticleRepository extends JpaRepository<Article,Long> {
     @Query("select a from Article a where a.title like :key")
     List<Article> searchByTitle(@Param("key") String title);
 
-    @Query("select * from article where article.is_news = 1")
+    @Query(value = "select a from Article a where a.is_news = 1", nativeQuery = true)
     List<Article> findByIsNews();
 }
 
