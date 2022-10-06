@@ -27,6 +27,7 @@ public class Article {
     @Column(nullable = false, name = "is_news")
     private Boolean isNews;
 
+
     private Date createdOn;
 
     private Date updateOn;
@@ -37,6 +38,9 @@ public class Article {
     @JoinColumn(name = "user_id")
     //@JsonMAnagedReference
     private User user = new User();
+
+    private String createdBy = user.getUsername();
+
 
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "article_tag",

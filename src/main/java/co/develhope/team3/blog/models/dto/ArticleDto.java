@@ -26,6 +26,7 @@ public class ArticleDto {
     private Date createdOn;
     private Date updateOn;
     private UserDto user;
+    private String createdBy = user.getUsername();
     private List<Tag> tags= new ArrayList<>();
     private List<Comment> commentDtos = new ArrayList<>();
     private List<Category> category = new ArrayList<>();
