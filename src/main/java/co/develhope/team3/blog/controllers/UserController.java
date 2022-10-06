@@ -64,14 +64,5 @@ public class UserController {
         return new ResponseEntity<UserDto>(updatedUser, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{username}")
-    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_EDITOR')")
-    public ResponseEntity<ApiResponse> deleteUser(@PathVariable(value = "username") String username,
-                                                  @CurrentUser UserPrincipal currentUser) {
 
-        //@TODO errore 401, non entra nel controller, "message": "Full authentication is required to access this resource"
-        ApiResponse apiResponse = userServiceBlog.deleteUser(username, currentUser);
-
-        return new ResponseEntity< >(apiResponse, HttpStatus.OK);
-    }
 }

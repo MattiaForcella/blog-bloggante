@@ -17,5 +17,4 @@ public interface UserServiceBlog {
 
     UserDto updateUser(@Valid UserAdministrationRequest newUser, String username, UserPrincipal currentUser);
 
-    ApiResponse deleteUser(String username, UserPrincipal currentUser);
 }

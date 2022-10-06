@@ -97,25 +97,7 @@ public class UserServiceBlogImpl implements UserServiceBlog {
         );
     }
 
-    @Override
-    public ApiResponse deleteUser(String username, UserPrincipal currentUser) {
-        User user = userRepository.findByUsername(username);
-        if (user == null) {
-            throw new  BlogException(
-                    HttpStatus.NOT_FOUND,
-                    "user not found"
-            );
-        }
-        if (!user.getId().equals(currentUser.getId()) || !currentUser.getAuthorities()
-                .contains(new SimpleGrantedAuthority(RoleName.ROLE_ADMIN.toString()))) {
-            ApiResponse apiResponse = new ApiResponse(Boolean.FALSE, "You don't have permission to delete profile of: " + username);
-            throw new AccessDeniedException(apiResponse.toString());
-        }
 
-        userRepository.deleteById(user.getId());
-
-        return new ApiResponse(Boolean.TRUE, "You successfully deleted profile of: " + username);
-    }
 }
 
 
