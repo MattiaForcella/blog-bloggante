@@ -5,7 +5,6 @@ import co.develhope.team3.blog.payloads.response.ApiResponse;
 import co.develhope.team3.blog.utils.AppConstants;
 import co.develhope.team3.blog.models.Article;
 import co.develhope.team3.blog.models.dto.UserDto;
-import co.develhope.team3.blog.payloads.request.UserRequest;
 import co.develhope.team3.blog.payloads.response.PagedResponse;
 import co.develhope.team3.blog.security.models.CurrentUser;
 import co.develhope.team3.blog.security.models.UserPrincipal;
@@ -53,7 +52,7 @@ public class UserController {
 
     @PutMapping("/{username}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<UserDto> updateUser(@Valid @RequestBody User newUser,
+    public ResponseEntity<UserDto> userSettingsForAdmin(@Valid @RequestBody User newUser,
                                            @PathVariable(value = "username") String username, @CurrentUser UserPrincipal currentUser) {
         UserDto updatedUser = userServiceBlog.updateUser(newUser, username, currentUser);
 
@@ -68,38 +67,4 @@ public class UserController {
 
         return new ResponseEntity< >(apiResponse, HttpStatus.OK);
     }
-
-
-    //@HierarchicalSecurity(bottomRole = "ROLE_USER")
-    @PutMapping("/edit-about/{id}")
-    public ResponseEntity<Void> putAbout(@RequestBody @Valid UserRequest userRequest, @PathVariable Long id) {
-
-        //@TODO authentication
-        return userServiceBlog.putAbout(userRequest, id);
-    }
-    //@RoleSecurity(value = { "ROLE_ADMIN" })
-    @PutMapping("/ban-user/{id}")
-    public ResponseEntity<Void> putBan(@RequestBody Boolean ban, @PathVariable Long id ) {
-        //@TODO authentication
-
-        return userServiceBlog.banUser(ban, id);
-    }
-
-    //put	/edit-role
-    //@RoleSecurity(value = { "ROLE_ADMIN" })
-    @PutMapping("/add-role/{id}")
-    public ResponseEntity<Void> putRole(@RequestBody String role, @PathVariable Long id ) {
-        //@TODO authentication
-            return userServiceBlog.addRole(role,id);
-    }
-
-    //@RoleSecurity(value = { "ROLE_ADMIN" })
-    @PutMapping("/remove-role/{id}")
-    public ResponseEntity<Void> removeRole(@RequestBody String role, @PathVariable Long userId ) {
-        //@TODO authentication
-        return userServiceBlog.removeRole(role,userId);
-    }
-
-
-
-    }
+}
