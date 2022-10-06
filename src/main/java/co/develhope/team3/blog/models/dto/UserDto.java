@@ -33,6 +33,7 @@ public class UserDto {
     private String password;
 
     private Boolean ban;
+    private Boolean isActive;
 
     private List<ArticleDto> articleDtos = new ArrayList<>();
     private List<CommentDto> commentDtos = new ArrayList<>();

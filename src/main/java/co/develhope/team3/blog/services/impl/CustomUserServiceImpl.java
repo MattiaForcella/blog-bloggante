@@ -10,10 +10,12 @@ import co.develhope.team3.blog.repository.UserRepository;
 import co.develhope.team3.blog.services.CustomUserService;
 import co.develhope.team3.blog.services.MailNotificationService;
 import co.develhope.team3.blog.services.RoleService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
 
 import java.util.List;
 import java.util.UUID;
@@ -27,15 +29,20 @@ public class CustomUserServiceImpl implements CustomUserService {
     private RoleService roleService;
     @Autowired
     private MailNotificationService mailNotificationService;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Autowired
     private PasswordEncoder encoder;
 
 
     @Override
-    public void existByUsername(String username) {
-        if (userRepository.findByUsername(username) != null ){
+    public void existByUsername(String username, Boolean condition) {
+        if (userRepository.findByUsername(username) != null && !condition){
             throw new BlogException(HttpStatus.BAD_REQUEST, "username is already in use");
+        }
+        if (userRepository.findByUsername(username) == null && condition){
+            throw new BlogException(HttpStatus.BAD_REQUEST, "wrong data");
         }
     }
 
@@ -66,6 +73,28 @@ public class CustomUserServiceImpl implements CustomUserService {
         ApiResponse apiResponse = userToResponse(user);
 
         return apiResponse;
+    }
+
+    @Override
+    public UserDto userToDto(String username) {
+
+        User user = userRepository.findByUsername(username);
+        UserDto userDto = modelMapper.map(user, UserDto.class);
+        userDto.setPassword(null);
+
+        return userDto;
+    }
+
+    @Override
+    public void userLoginControl(UserDto userDto) {
+
+        if (userDto.getBan()){
+            throw new RuntimeException("user banned");
+        }
+
+        if (!userDto.getIsActive()){
+            throw new RuntimeException("user not active");
+        }
     }
 
     private ApiResponse userToResponse(User user) {

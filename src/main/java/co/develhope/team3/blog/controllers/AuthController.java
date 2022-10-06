@@ -6,17 +6,25 @@ import co.develhope.team3.blog.payloads.request.LoginRequest;
 import co.develhope.team3.blog.payloads.request.SignupRequest;
 import co.develhope.team3.blog.payloads.response.ApiResponse;
 import co.develhope.team3.blog.payloads.response.JwtResponse;
+import co.develhope.team3.blog.security.jwt.JwtUtils;
 import co.develhope.team3.blog.security.services.UserActivationImpl;
+import co.develhope.team3.blog.security.services.UserDetailsImpl;
 import co.develhope.team3.blog.services.CustomUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -28,19 +36,19 @@ public class AuthController {
     @Autowired
     private UserActivationImpl activation;
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-    @PostMapping("/signin")
-    public ResponseEntity<JwtResponse> signin(@Valid @RequestBody LoginRequest loginRequest){
+    @Autowired
+    private JwtUtils jwtUtils;
 
 
-        return null;
 
-    }
 
     @PostMapping("/signup")
     public ResponseEntity<ApiResponse> signup(@Valid @RequestBody SignupRequest signupRequest) throws Exception {
 
-        customUserService.existByUsername(signupRequest.getUsername());
+        customUserService.existByUsername(signupRequest.getUsername(), false);
         customUserService.existByEmail(signupRequest.getEmail());
         ApiResponse apiResponse = customUserService.setUserData(signupRequest);
 
@@ -53,5 +61,36 @@ public class AuthController {
         ApiResponse apiResponse = activation.activate(signupActivationDto);
 
         return new ResponseEntity<ApiResponse>(apiResponse,HttpStatus.OK);
+    }
+
+    @PostMapping("/signin")
+    public ResponseEntity<JwtResponse> signin(@Valid @RequestBody LoginRequest loginRequest){
+
+        customUserService.existByUsername(loginRequest.getUsername(), true);
+        UserDto userDto = customUserService.userToDto(loginRequest.getUsername());
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),loginRequest.getPassword()));
+
+        customUserService.userLoginControl(userDto);
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtUtils.generateJwtToken(authentication);
+
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(user->user.getAuthority())
+                .collect(Collectors.toList());
+
+
+        JwtResponse jwtResponse = new JwtResponse(jwt,
+                userDetails.getId(),
+                userDetails.getUsername(),
+                userDetails.getEmail(),
+                roles);
+
+        return new ResponseEntity<JwtResponse>(jwtResponse, HttpStatus.OK);
+
     }
 }
