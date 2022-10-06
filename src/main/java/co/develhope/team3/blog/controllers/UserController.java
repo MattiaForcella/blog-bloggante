@@ -1,6 +1,6 @@
 package co.develhope.team3.blog.controllers;
 
-import co.develhope.team3.blog.models.user.User;
+import co.develhope.team3.blog.payloads.request.UserAdministrationRequest;
 import co.develhope.team3.blog.payloads.response.ApiResponse;
 import co.develhope.team3.blog.utils.AppConstants;
 import co.develhope.team3.blog.models.Article;
@@ -14,11 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/users")
@@ -33,7 +31,7 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<UserDto> getCurrentUser(@CurrentUser UserPrincipal currentUser){
 
-        //@TODO errore 401, non entra nel controller
+        //@TODO errore 401, non entra nel controller, "message": "Full authentication is required to access this resource"
         UserDto userDto = userServiceBlog.getCurrentUser(currentUser);
 
         return new ResponseEntity<UserDto>(userDto, HttpStatus.OK);
@@ -57,17 +55,21 @@ public class UserController {
 
     @PutMapping("/{username}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<UserDto> userSettingsForAdmin(@Valid @RequestBody User newUser,
+    public ResponseEntity<UserDto> userSettingsForAdmin(@Valid @RequestBody UserAdministrationRequest newUser,
                                            @PathVariable(value = "username") String username, @CurrentUser UserPrincipal currentUser) {
+
+        //@TODO errore 401, non entra nel controller, "message": "Full authentication is required to access this resource"
         UserDto updatedUser = userServiceBlog.updateUser(newUser, username, currentUser);
 
         return new ResponseEntity<UserDto>(updatedUser, HttpStatus.OK);
     }
 
     @DeleteMapping("/{username}")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_EDITOR')")
     public ResponseEntity<ApiResponse> deleteUser(@PathVariable(value = "username") String username,
                                                   @CurrentUser UserPrincipal currentUser) {
+
+        //@TODO errore 401, non entra nel controller, "message": "Full authentication is required to access this resource"
         ApiResponse apiResponse = userServiceBlog.deleteUser(username, currentUser);
 
         return new ResponseEntity< >(apiResponse, HttpStatus.OK);

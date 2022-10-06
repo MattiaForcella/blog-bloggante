@@ -3,8 +3,10 @@ package co.develhope.team3.blog.services.impl;
 
 import co.develhope.team3.blog.exceptions.BlogException;
 import co.develhope.team3.blog.models.dto.UserDto;
+import co.develhope.team3.blog.models.user.Role;
 import co.develhope.team3.blog.models.user.RoleName;
 import co.develhope.team3.blog.models.user.User;
+import co.develhope.team3.blog.payloads.request.UserAdministrationRequest;
 import co.develhope.team3.blog.payloads.response.ApiResponse;
 import co.develhope.team3.blog.repository.RoleRepository;
 import co.develhope.team3.blog.repository.UserRepository;
@@ -18,6 +20,9 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -69,12 +74,15 @@ public class UserServiceBlogImpl implements UserServiceBlog {
     }
 
     @Override
-    public UserDto updateUser(User newUser, String username, UserPrincipal currentUser) {
+    public UserDto updateUser(@Valid UserAdministrationRequest newUser, String username, UserPrincipal currentUser) {
         User user = userRepository.findByUsername(username);
         if (user.getId().equals(currentUser.getId())
                 || currentUser.getAuthorities().contains(new SimpleGrantedAuthority(RoleName.ROLE_ADMIN.toString()))) {
             user.setBan(newUser.getBan());
-            user.setRoles(newUser.getRoles());
+
+            List<Role> roles = new ArrayList<>();
+            roles.add(newUser.getRole());
+            user.setRoles(roles);
             userRepository.save(user);
 
         }
