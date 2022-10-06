@@ -2,6 +2,7 @@ package co.develhope.team3.blog.models.user;
 
 import co.develhope.team3.blog.models.Article;
 import co.develhope.team3.blog.models.Comment;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,8 +32,9 @@ public class User {
     private String username;
 
     //TODO quando in futurò verrà implementata la classe relativa alla registrazione, ricordarsi di aggiungere la codifica dalla libreria di Pasquale (giustifica lenght = 150)
-    @JsonIgnore
+
     @Column(length = 150)
+    @JsonBackReference
     private String password;
 
     @Column(nullable = false, unique = true)

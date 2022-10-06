@@ -11,6 +11,7 @@ import co.develhope.team3.blog.models.user.User;
 import co.develhope.team3.blog.payloads.response.ArticleResponse;
 import co.develhope.team3.blog.payloads.response.PagedResponse;
 import co.develhope.team3.blog.repository.*;
+import co.develhope.team3.blog.security.models.UserPrincipal;
 import co.develhope.team3.blog.services.ArticleService;
 import co.develhope.team3.blog.utils.AppConstants;
 import org.modelmapper.ModelMapper;
@@ -55,23 +56,26 @@ public class ArticleServiceImpl implements ArticleService {
 
 
     @Override
-    public ArticleDto createArticle(ArticleDto articleDto, Long categoryId, Long userId) {
+    public ArticleDto createArticle(ArticleDto articleDto, Long categoryId, Long userId, UserPrincipal currentUser) {
 
-        User user = this.userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User", "User id", userId));
+        User user = this.userRepository.findById(currentUser.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("User", "User id", currentUser.getId()));
 
         Category category = this.categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "category id ", categoryId));
 
         Article article = this.modelMapper.map(articleDto, Article.class);
-        article.setImageName("default.png");
+        // TODO aggiungere immagine    article.setImageName("default.png");
         article.setCreatedAt(new Date());
         article.setUser(user);
+
         article.setCategory(category);
 
         Article newArticle = this.articleRepository.save(article);
+        ArticleDto articleDto1 = this.modelMapper.map(newArticle, ArticleDto.class);
 
-        return this.modelMapper.map(newArticle, ArticleDto.class);
+
+        return articleDto1;
     }
 
     @Override

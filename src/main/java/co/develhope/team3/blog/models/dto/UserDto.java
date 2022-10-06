@@ -3,6 +3,8 @@ package co.develhope.team3.blog.models.dto;
 import co.develhope.team3.blog.models.Article;
 import co.develhope.team3.blog.models.Comment;
 import co.develhope.team3.blog.models.user.Role;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,6 +36,7 @@ public class UserDto {
     private String about;
 
     @Size(max = 150)
+    @JsonBackReference
     private String password;
 
     private Boolean ban;
@@ -54,7 +57,6 @@ public class UserDto {
 
         this.ban = ban;
         this.articleDtos = articles;
-
 
     }
 }

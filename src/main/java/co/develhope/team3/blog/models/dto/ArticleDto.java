@@ -4,6 +4,7 @@ import co.develhope.team3.blog.models.Category;
 import co.develhope.team3.blog.models.Comment;
 import co.develhope.team3.blog.models.Tag;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,12 +22,16 @@ public class ArticleDto {
     @NotBlank(message = "il titolo non puo essere vuoto")
     private String title;
     @NotBlank(message = "il contenuto non puo essere vuoto")
-    @Column(nullable = false, length = 100000000)
     private String content;
     private Date createdOn;
     private Date updateOn;
+
+
     private UserDto user;
-    private String createdBy = user.getUsername();
+
+
+
+
     private List<Tag> tags= new ArrayList<>();
     private List<Comment> commentDtos = new ArrayList<>();
     private List<Category> category = new ArrayList<>();
@@ -34,4 +39,10 @@ public class ArticleDto {
     private Boolean isNews;
     private String imageName;
 
+    public ArticleDto(String title, String content, List<Tag> tags, Boolean isNews) {
+        this.title = title;
+        this.content = content;
+        this.tags = tags;
+        this.isNews = isNews;
+    }
 }

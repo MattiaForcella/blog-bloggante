@@ -1,5 +1,7 @@
 package co.develhope.team3.blog.controllers;
 
+import co.develhope.team3.blog.security.models.CurrentUser;
+import co.develhope.team3.blog.security.models.UserPrincipal;
 import co.develhope.team3.blog.utils.AppConstants;
 import co.develhope.team3.blog.models.dto.ArticleDto;
 import co.develhope.team3.blog.models.dto.CategoryDto;
@@ -11,7 +13,9 @@ import co.develhope.team3.blog.services.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,18 +43,15 @@ public class ArticleController {
     private String path;
 
 
-    //@HierarchicalSecurity(bottomRole = "ROLE_EDITOR")
+
     @PostMapping("/user/{userId}/category/{categoryId}/articles")
+    @PreAuthorize("hasRole('ROLE_EDITOR') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<ArticleDto> createArticle(@RequestBody @Valid ArticleDto articleDto,
                                         @PathVariable Long userId,
-                                        @PathVariable Long categoryId) throws AuthException {
-/*
-        AuthenticationContext.Principal principal = AuthenticationContext.get();
-        utilsService.authControl(userId, principal);
+                                        @PathVariable Long categoryId,
+                                        @CurrentUser UserPrincipal currentUser) throws AuthException {
 
- */
-
-        ArticleDto createArticle =this.articleService.createArticle(articleDto,categoryId,userId);
+        ArticleDto createArticle = this.articleService.createArticle(articleDto,categoryId,userId, currentUser);
 
         return new ResponseEntity<ArticleDto>(createArticle, HttpStatus.CREATED);
 

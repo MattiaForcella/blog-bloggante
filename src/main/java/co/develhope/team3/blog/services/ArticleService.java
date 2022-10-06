@@ -7,13 +7,14 @@ import co.develhope.team3.blog.models.dto.CommentDto;
 import co.develhope.team3.blog.models.Tag;
 import co.develhope.team3.blog.payloads.response.ArticleResponse;
 import co.develhope.team3.blog.payloads.response.PagedResponse;
+import co.develhope.team3.blog.security.models.UserPrincipal;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 
 public interface ArticleService {
-    ArticleDto createArticle(ArticleDto articleDto, Long categoryId, Long userId) ;
+    ArticleDto createArticle(ArticleDto articleDto, Long categoryId, Long userId, UserPrincipal currentUser) ;
 
     List<ArticleDto> getArticleByUser(Long id);
 
