@@ -1,6 +1,6 @@
 package co.develhope.team3.blog.services;
 
-import co.develhope.team3.blog.dto.CategoryDto;
+import co.develhope.team3.blog.models.dto.CategoryDto;
 import co.develhope.team3.blog.payloads.response.CategoryResponse;
 
 

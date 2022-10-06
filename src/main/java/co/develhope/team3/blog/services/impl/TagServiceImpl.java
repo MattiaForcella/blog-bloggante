@@ -1,6 +1,6 @@
 package co.develhope.team3.blog.services.impl;
 
-import co.develhope.team3.blog.dto.TagDto;
+import co.develhope.team3.blog.models.dto.TagDto;
 import co.develhope.team3.blog.exceptions.ResourceNotFoundException;
 import co.develhope.team3.blog.models.Tag;
 import co.develhope.team3.blog.payloads.request.TagRequest;

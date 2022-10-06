@@ -1,6 +1,6 @@
 package co.develhope.team3.blog.controllers;
 
-import co.develhope.team3.blog.dto.CommentDto;
+import co.develhope.team3.blog.models.dto.CommentDto;
 import co.develhope.team3.blog.payloads.request.CommentRequest;
 import co.develhope.team3.blog.services.impl.CommentServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;

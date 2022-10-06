@@ -3,9 +3,7 @@ package co.develhope.team3.blog.payloads.request;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+
 
 public class SignupRequest {
 
@@ -16,10 +14,15 @@ public class SignupRequest {
     @Email
     private String email;
 
-    private List<String> role = new ArrayList<>();
     @NotBlank
     @Size(min = 8, max = 64)
     private String password;
+
+    public SignupRequest(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
 
     public String getUsername() {
         return username;
@@ -45,11 +48,4 @@ public class SignupRequest {
         this.password = password;
     }
 
-    public List<String> getRole() {
-        return this.role;
-    }
-
-    public void setRole(List<String> role) {
-        this.role = role;
-    }
 }

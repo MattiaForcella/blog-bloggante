@@ -1,6 +1,6 @@
 package co.develhope.team3.blog.controllers;
 
-import co.develhope.team3.blog.dto.TagDto;
+import co.develhope.team3.blog.models.dto.TagDto;
 import co.develhope.team3.blog.payloads.request.TagDeleteRequest;
 import co.develhope.team3.blog.payloads.request.TagRequest;
 import co.develhope.team3.blog.repository.TagRepository;

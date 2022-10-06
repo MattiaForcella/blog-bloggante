@@ -1,7 +1,7 @@
 
 package co.develhope.team3.blog.services.impl;
 
-import co.develhope.team3.blog.dto.UserDto;
+import co.develhope.team3.blog.models.dto.UserDto;
 import co.develhope.team3.blog.payloads.request.UserRequest;
 import co.develhope.team3.blog.services.UserServiceBlog;
 import org.springframework.http.ResponseEntity;

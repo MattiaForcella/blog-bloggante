@@ -1,7 +1,6 @@
 package co.develhope.team3.blog.payloads.response;
 
-import co.develhope.team3.blog.dto.ArticleDto;
-import co.develhope.team3.blog.dto.CategoryDto;
+import co.develhope.team3.blog.models.dto.CategoryDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

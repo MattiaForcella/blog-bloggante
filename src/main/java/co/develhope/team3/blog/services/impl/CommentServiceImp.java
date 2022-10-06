@@ -1,7 +1,7 @@
 package co.develhope.team3.blog.services.impl;
 
 import co.develhope.team3.blog.config.AppConstants;
-import co.develhope.team3.blog.dto.CommentDto;
+import co.develhope.team3.blog.models.dto.CommentDto;
 import co.develhope.team3.blog.models.Article;
 import co.develhope.team3.blog.models.Comment;
 import co.develhope.team3.blog.payloads.request.CommentRequest;

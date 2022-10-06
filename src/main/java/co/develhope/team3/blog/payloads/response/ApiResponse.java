@@ -1,6 +1,6 @@
 package co.develhope.team3.blog.payloads.response;
 
-import co.develhope.team3.blog.dto.UserDto;
+import co.develhope.team3.blog.models.dto.UserDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ApiResponse {

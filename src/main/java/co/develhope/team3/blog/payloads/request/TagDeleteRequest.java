@@ -1,6 +1,6 @@
 package co.develhope.team3.blog.payloads.request;
 
-import co.develhope.team3.blog.dto.TagDto;
+import co.develhope.team3.blog.models.dto.TagDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -2,6 +2,7 @@ package co.develhope.team3.blog.models.user;
 
 import co.develhope.team3.blog.models.Article;
 import co.develhope.team3.blog.models.Comment;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,11 +15,12 @@ import java.util.List;
 @Entity
 @Table
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(nullable = false, unique = true)
@@ -38,7 +40,7 @@ public class User {
     private Boolean ban = false;
 
     private String activationCode;
-    private String isActiveUser;
+    private Boolean isActiveUser = false;
 
 
 

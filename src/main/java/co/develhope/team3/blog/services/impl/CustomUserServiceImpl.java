@@ -1,6 +1,6 @@
 package co.develhope.team3.blog.services.impl;
 
-import co.develhope.team3.blog.dto.UserDto;
+import co.develhope.team3.blog.models.dto.UserDto;
 import co.develhope.team3.blog.exceptions.BlogException;
 import co.develhope.team3.blog.models.user.Role;
 import co.develhope.team3.blog.models.user.User;
@@ -12,6 +12,7 @@ import co.develhope.team3.blog.services.MailNotificationService;
 import co.develhope.team3.blog.services.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,6 +27,9 @@ public class CustomUserServiceImpl implements CustomUserService {
     private RoleService roleService;
     @Autowired
     private MailNotificationService mailNotificationService;
+
+    @Autowired
+    private PasswordEncoder encoder;
 
 
     @Override
@@ -48,20 +52,20 @@ public class CustomUserServiceImpl implements CustomUserService {
         User user = new User(
                 signupRequest.getUsername(),
                 signupRequest.getEmail(),
-                signupRequest.getPassword()
+                encoder.encode(signupRequest.getPassword())
         );
 
-        List<Role> roles = roleService.defaultRole();
-        user.setRoles(roles);
+
 
         user.setActivationCode(UUID.randomUUID().toString());
         mailNotificationService.sendActivationEmail(user);
+
 
         userRepository.save(user);
 
         ApiResponse apiResponse = userToResponse(user);
 
-        return null;
+        return apiResponse;
     }
 
     private ApiResponse userToResponse(User user) {
@@ -69,8 +73,7 @@ public class CustomUserServiceImpl implements CustomUserService {
         UserDto userDto = new UserDto();
         userDto.setEmail(user.getEmail());
         userDto.setId(user.getId());
-        userDto.setRoles(user.getRoles());
-        userDto.setUsername(userDto.getUsername());
+        userDto.setUsername(user.getUsername());
 
         ApiResponse apiResponse = new ApiResponse(
                 true,

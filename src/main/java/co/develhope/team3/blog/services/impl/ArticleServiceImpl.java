@@ -1,9 +1,9 @@
 package co.develhope.team3.blog.services.impl;
 
-import co.develhope.team3.blog.dto.ArticleDto;
-import co.develhope.team3.blog.dto.CategoryDto;
-import co.develhope.team3.blog.dto.CommentDto;
-import co.develhope.team3.blog.dto.UserDto;
+import co.develhope.team3.blog.models.dto.ArticleDto;
+import co.develhope.team3.blog.models.dto.CategoryDto;
+import co.develhope.team3.blog.models.dto.CommentDto;
+import co.develhope.team3.blog.models.dto.UserDto;
 import co.develhope.team3.blog.exceptions.ResourceNotFoundException;
 import co.develhope.team3.blog.models.*;
 

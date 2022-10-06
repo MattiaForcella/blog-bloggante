@@ -1,4 +1,4 @@
-package co.develhope.team3.blog.dto;
+package co.develhope.team3.blog.models.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,6 +1,6 @@
 package co.develhope.team3.blog.services;
 
-import co.develhope.team3.blog.dto.TagDto;
+import co.develhope.team3.blog.models.dto.TagDto;
 import co.develhope.team3.blog.payloads.request.TagRequest;
 import org.springframework.http.ResponseEntity;
 

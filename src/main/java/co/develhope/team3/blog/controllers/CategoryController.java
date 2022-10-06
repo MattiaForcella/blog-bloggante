@@ -2,7 +2,7 @@ package co.develhope.team3.blog.controllers;
 
 
 import co.develhope.team3.blog.config.AppConstants;
-import co.develhope.team3.blog.dto.CategoryDto;
+import co.develhope.team3.blog.models.dto.CategoryDto;
 import co.develhope.team3.blog.payloads.response.CategoryDeleteResponse;
 import co.develhope.team3.blog.payloads.response.CategoryResponse;
 import co.develhope.team3.blog.services.CategoryService;

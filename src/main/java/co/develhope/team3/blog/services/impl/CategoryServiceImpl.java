@@ -1,6 +1,6 @@
 package co.develhope.team3.blog.services.impl;
 
-import co.develhope.team3.blog.dto.CategoryDto;
+import co.develhope.team3.blog.models.dto.CategoryDto;
 import co.develhope.team3.blog.exceptions.ResourceNotFoundException;
 import co.develhope.team3.blog.models.Category;
 import co.develhope.team3.blog.payloads.response.CategoryResponse;

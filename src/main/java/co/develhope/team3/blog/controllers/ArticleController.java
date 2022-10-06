@@ -1,9 +1,9 @@
 package co.develhope.team3.blog.controllers;
 
 import co.develhope.team3.blog.config.AppConstants;
-import co.develhope.team3.blog.dto.ArticleDto;
-import co.develhope.team3.blog.dto.CategoryDto;
-import co.develhope.team3.blog.dto.CommentDto;
+import co.develhope.team3.blog.models.dto.ArticleDto;
+import co.develhope.team3.blog.models.dto.CategoryDto;
+import co.develhope.team3.blog.models.dto.CommentDto;
 import co.develhope.team3.blog.models.Tag;
 import co.develhope.team3.blog.payloads.response.ArticleResponse;
 import co.develhope.team3.blog.payloads.response.ArticleDeleteResponse;
