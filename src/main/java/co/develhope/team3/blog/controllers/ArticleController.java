@@ -31,13 +31,6 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
 
-    /*
-    @Autowired
-    private FileService fileService;
-    @Autowired
-    private UtilsService utilsService;
-
-     */
 
     @Value("${project.image}")
     private String path;
@@ -57,31 +50,26 @@ public class ArticleController {
 
     }
 
-    //@PublicEndpoint
     @GetMapping("/user/{userId}/articles")
-    public ResponseEntity<List<ArticleDto>> getArticleByUser(@PathVariable Long userId){
+    public ResponseEntity<List<ArticleDto>> getArticlesByUser(@PathVariable Long userId){
         return new ResponseEntity<List<ArticleDto>>(articleService.getArticleByUser(userId), HttpStatus.FOUND);
     }
 
-    //@PublicEndpoint
     @GetMapping("/category/{categoryId}/articles")
-    public ResponseEntity<List<ArticleDto>> getArticleByCategory(@PathVariable Long categoryId){
+    public ResponseEntity<List<ArticleDto>> getArticlesByCategory(@PathVariable Long categoryId){
         return new ResponseEntity<List<ArticleDto>>(articleService.getArticleByCategory(categoryId), HttpStatus.FOUND);
     }
 
-    //@PublicEndpoint
-    @GetMapping("/posts")
-    public ResponseEntity<ArticleResponse> getAllPost(
+    @GetMapping("/article")
+    public ResponseEntity<ArticleResponse> getAllArticle(
             @RequestParam(value = "pageNumber", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) Integer pageNumber,
-            @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) Integer pageSize,
-            @RequestParam(value = "sortBy", defaultValue = AppConstants.SORT_BY, required = false) String sortBy,
-            @RequestParam(value = "sortDir", defaultValue = AppConstants.SORT_DIR, required = false) String sortDir) {
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) Integer pageSize) {
 
-        ArticleResponse postResponse = this.articleService.getAllArticles(pageNumber, pageSize, sortBy, sortDir);
+        ArticleResponse postResponse = this.articleService.getAllArticles(pageNumber, pageSize);
         return new ResponseEntity<ArticleResponse>(postResponse, HttpStatus.FOUND);
     }
 
-    //@PublicEndpoint
+    /*****************/
     @GetMapping("/articles/{id}")
     public ResponseEntity<ArticleDto> getArticleById(@PathVariable Long id){
         return new ResponseEntity<ArticleDto>(articleService.getArticleById(id), HttpStatus.FOUND);

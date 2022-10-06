@@ -20,7 +20,7 @@ public interface ArticleService {
 
     List<ArticleDto> getArticleByCategory(Long id);
 
-    ArticleResponse getAllArticles(Integer pageNumber, Integer pageSize, String sortBy, String sortDir);
+    ArticleResponse getAllArticles(Integer pageNumber, Integer pageSize);
 
     ArticleDto getArticleById(Long id);
 
