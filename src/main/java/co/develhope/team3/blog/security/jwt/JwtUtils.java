@@ -31,7 +31,7 @@ public class JwtUtils {
 
         return
             Jwts.builder()
-                    .setSubject(Long.toString(principal.getId()))
+                    .setSubject(principal.getUsername())
                     .setIssuedAt(new Date())
                     .setExpiration(expiryDate)
                     .signWith(SignatureAlgorithm.HS512, jwtSecret)

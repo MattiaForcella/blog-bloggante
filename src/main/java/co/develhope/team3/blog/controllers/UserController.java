@@ -28,7 +28,7 @@ public class UserController {
 
 
     @GetMapping("/me")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_EDITOR') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<UserDto> getCurrentUser(@CurrentUser UserPrincipal currentUser){
 
         //@TODO errore 401, non entra nel controller, "message": "Full authentication is required to access this resource"
