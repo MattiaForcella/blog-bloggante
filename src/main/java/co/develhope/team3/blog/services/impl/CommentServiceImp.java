@@ -1,6 +1,6 @@
 package co.develhope.team3.blog.services.impl;
 
-import co.develhope.team3.blog.config.AppConstants;
+import co.develhope.team3.blog.utils.AppConstants;
 import co.develhope.team3.blog.models.dto.CommentDto;
 import co.develhope.team3.blog.models.Article;
 import co.develhope.team3.blog.models.Comment;
@@ -80,8 +80,8 @@ public class CommentServiceImp implements CommentService {
     @Override
     public ResponseEntity<List<CommentDto>> getFlaggedComments() {
 
-        Pageable p = PageRequest.of(Integer.parseInt(AppConstants.PAGE_NUMBER),
-                Integer.parseInt(AppConstants.PAGE_SIZE),
+        Pageable p = PageRequest.of(Integer.parseInt(AppConstants.DEFAULT_PAGE_SIZE),
+                Integer.parseInt(AppConstants.DEFAULT_PAGE_SIZE),
                 Sort.by("flag").descending());
         Page<Comment> pageComment = commentRepository.findAllFlaggedComments(p);
         List<Comment> allComments = pageComment.getContent();
@@ -99,8 +99,8 @@ public class CommentServiceImp implements CommentService {
 
     @Override
     public ResponseEntity<List<CommentDto>> getAllArticleComments(Long articleId) {
-        Pageable p = PageRequest.of(Integer.parseInt(AppConstants.PAGE_NUMBER),
-                Integer.parseInt(AppConstants.PAGE_SIZE));
+        Pageable p = PageRequest.of(Integer.parseInt(AppConstants.DEFAULT_PAGE_NUMBER),
+                Integer.parseInt(AppConstants.DEFAULT_PAGE_SIZE));
         Page<Comment> pageComment = commentRepository.findAllByArticleId(articleId, p);
         List<Comment> allComments = pageComment.getContent();
         List<CommentDto> commentDtos = allComments.stream().map((comment) -> this.modelMapper.map(comment, CommentDto.class))

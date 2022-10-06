@@ -1,6 +1,6 @@
 package co.develhope.team3.blog.controllers;
 
-import co.develhope.team3.blog.config.AppConstants;
+import co.develhope.team3.blog.utils.AppConstants;
 import co.develhope.team3.blog.models.dto.ArticleDto;
 import co.develhope.team3.blog.models.dto.CategoryDto;
 import co.develhope.team3.blog.models.dto.CommentDto;

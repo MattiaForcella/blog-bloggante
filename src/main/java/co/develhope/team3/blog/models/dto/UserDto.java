@@ -1,14 +1,18 @@
 package co.develhope.team3.blog.models.dto;
 
+import co.develhope.team3.blog.models.Article;
+import co.develhope.team3.blog.models.Comment;
 import co.develhope.team3.blog.models.user.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Data
@@ -35,8 +39,22 @@ public class UserDto {
     private Boolean ban;
     private Boolean isActive;
 
-    private List<ArticleDto> articleDtos = new ArrayList<>();
-    private List<CommentDto> commentDtos = new ArrayList<>();
+    private List<Article> articleDtos = new ArrayList<>();
+    private List<Comment> commentDtos = new ArrayList<>();
     private List<Role> roles = new ArrayList<>();
 
+    public UserDto(Long id, Boolean activeUser, String about, String email, String username,
+                   Boolean ban, List<Article> articles) {
+
+        this.id = id;
+        this.isActive= activeUser;
+        this.about = about;
+        this.email = email;
+        this.username=username;
+
+        this.ban = ban;
+        this.articleDtos = articles;
+
+
+    }
 }

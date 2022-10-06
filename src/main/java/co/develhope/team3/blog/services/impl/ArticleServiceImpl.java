@@ -9,8 +9,10 @@ import co.develhope.team3.blog.models.*;
 
 import co.develhope.team3.blog.models.user.User;
 import co.develhope.team3.blog.payloads.response.ArticleResponse;
+import co.develhope.team3.blog.payloads.response.PagedResponse;
 import co.develhope.team3.blog.repository.*;
 import co.develhope.team3.blog.services.ArticleService;
+import co.develhope.team3.blog.utils.AppConstants;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,9 +25,12 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static co.develhope.team3.blog.utils.AppConstants.CREATED_AT;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
@@ -256,6 +261,33 @@ public class ArticleServiceImpl implements ArticleService {
             articleDtos.add(articleDto);
         }
         return new ResponseEntity<>(articleDtos,HttpStatus.OK);
+    }
+
+    @Override
+    public PagedResponse<Article> getArticlesCreatedBy(String username, Integer page, Integer size) {
+        validatePageNumberAndSize(page, size);
+        User user = userRepository.findByUsername(username);
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, CREATED_AT);
+        Page<Article> articles = articleRepository.findByCreatedBy(user.getId(), pageable);
+
+        List<Article> content = articles.getNumberOfElements() == 0 ? Collections.emptyList() : articles.getContent();
+
+        return new PagedResponse<>(content, articles.getNumber(), articles.getSize(), articles.getTotalElements(),
+                articles.getTotalPages(), articles.isLast());
+    }
+
+    private void validatePageNumberAndSize(int page, int size) {
+        if (page < 0) {
+            throw new RuntimeException("Page number cannot be less than zero.");
+        }
+
+        if (size < 0) {
+            throw new RuntimeException("Size number cannot be less than zero.");
+        }
+
+        if (size > AppConstants.MAX_PAGE_SIZE) {
+            throw new RuntimeException("Page size must not be greater than " + AppConstants.MAX_PAGE_SIZE);
+        }
     }
 
 

@@ -1,10 +1,12 @@
 package co.develhope.team3.blog.services;
 
+import co.develhope.team3.blog.models.Article;
 import co.develhope.team3.blog.models.dto.ArticleDto;
 import co.develhope.team3.blog.models.dto.CategoryDto;
 import co.develhope.team3.blog.models.dto.CommentDto;
 import co.develhope.team3.blog.models.Tag;
 import co.develhope.team3.blog.payloads.response.ArticleResponse;
+import co.develhope.team3.blog.payloads.response.PagedResponse;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -44,4 +46,6 @@ public interface ArticleService {
     List<ArticleDto> searchPosts(String keywords);
 
     ResponseEntity<List<ArticleDto>> getAllArticlesByIsNews();
+
+    PagedResponse<Article> getArticlesCreatedBy(String username, Integer page, Integer size);
 }
