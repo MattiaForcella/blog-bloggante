@@ -28,6 +28,7 @@ public class RoleServiceImpl implements RoleService {
         List<Role> roles = new ArrayList<>();
         if (userRepository.count() <= 1) {
             roles.add(roleRepository.findByName(RoleName.ROLE_USER));
+            roles.add(roleRepository.findByName(RoleName.ROLE_EDITOR));
             roles.add(roleRepository.findByName(RoleName.ROLE_ADMIN));
         } else {
             roles.add(roleRepository.findByName(RoleName.ROLE_USER));
