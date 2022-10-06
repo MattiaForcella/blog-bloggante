@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class UserPrincipal implements UserDetails {
+public class UserPrincipal implements UserDetails{
 
     private Long id;
 
@@ -26,30 +26,7 @@ public class UserPrincipal implements UserDetails {
     private String password;
 
     private Collection<? extends GrantedAuthority> authorities;
-    private String about;
 
-    private Boolean ban = false;
-
-    private String activationCode;
-    private Boolean isActiveUser = false;
-    private List<Article> articles = new ArrayList<>();
-
-
-
-    public UserPrincipal(Long id, String username, String email, String password,
-                         Collection<? extends GrantedAuthority> authorities, String about,
-                         Boolean ban, String activationCode, Boolean isActiveUser, List<Article> articles) {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.authorities = authorities;
-        this.about = about;
-        this.ban = ban;
-        this.activationCode = activationCode;
-        this.isActiveUser = isActiveUser;
-        this.articles = articles;
-    }
 
     public UserPrincipal(Long id, String username, String email, String password,
                          Collection<? extends GrantedAuthority> authorities) {
@@ -129,23 +106,4 @@ public class UserPrincipal implements UserDetails {
         return Objects.hash(id);
     }
 
-    public String getAbout() {
-        return about;
-    }
-
-    public Boolean getBan() {
-        return ban;
-    }
-
-    public String getActivationCode() {
-        return activationCode;
-    }
-
-    public Boolean getActiveUser() {
-        return isActiveUser;
-    }
-
-    public List<Article> getArticles() {
-        return articles;
-    }
 }

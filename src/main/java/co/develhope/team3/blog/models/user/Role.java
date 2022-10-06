@@ -3,6 +3,8 @@ package co.develhope.team3.blog.models.user;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table
@@ -17,7 +19,6 @@ public class Role {
     @Column
     private RoleName name;
 
-    /*@TODO
     //Codice aggiunto per rispecchiare i vincoli di partecipazione
     @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "roles")
     private List<User> users = new ArrayList<>();
@@ -33,5 +34,5 @@ public class Role {
         users.remove(user);
     }
 
-     */
+
 }

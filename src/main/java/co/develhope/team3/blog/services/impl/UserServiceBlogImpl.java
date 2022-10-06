@@ -34,11 +34,12 @@ public class UserServiceBlogImpl implements UserServiceBlog {
 
 
     @Override
-    public UserDto getCurrentUser(@CurrentUser UserPrincipal currentUser) {
+    public UserDto getCurrentUser(@CurrentUser UserPrincipal principal) {
+        User currentUser = userRepository.findByUsername(principal.getUsername());
        return new UserDto(
 
                 currentUser.getId(),
-                currentUser.getActiveUser(),
+                currentUser.getIsActiveUser(),
                 currentUser.getAbout(),
                 currentUser.getEmail(),
                 currentUser.getUsername(),

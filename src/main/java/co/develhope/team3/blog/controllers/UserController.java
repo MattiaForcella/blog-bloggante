@@ -17,6 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/users")
@@ -26,9 +27,11 @@ public class UserController {
     @Autowired
     private ArticleService articleService;
 
+
     @GetMapping("/me")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<UserDto> getCurrentUser(@CurrentUser UserPrincipal currentUser){
+
         UserDto userDto = userServiceBlog.getCurrentUser(currentUser);
 
         return new ResponseEntity<UserDto>(userDto, HttpStatus.OK);
