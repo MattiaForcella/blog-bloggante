@@ -2,10 +2,13 @@ package co.develhope.team3.blog.controllers;
 
 import co.develhope.team3.blog.models.dto.CommentDto;
 import co.develhope.team3.blog.payloads.request.CommentRequest;
+import co.develhope.team3.blog.security.models.CurrentUser;
+import co.develhope.team3.blog.security.models.UserPrincipal;
 import co.develhope.team3.blog.services.impl.CommentServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.security.auth.message.AuthException;
@@ -22,10 +25,14 @@ public class CommentController {
     private CommentServiceImp commentServiceImp;
 
     //@HierarchicalSecurity(bottomRole = "ROLE_USER")
-    @PostMapping("")
-    public HttpStatus postComment(@RequestBody @Valid CommentRequest commentRequest){
+    @PostMapping("/{articleId}")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_EDITOR') or hasRole('ROLE_ADMIN')")
+    public ResponseEntity<CommentResponse> postComment(@RequestBody @Valid CommentRequest commentRequest,
+                                                       @CurrentUser UserPrincipal currentUser,
+                                                       @PathVariable Long articleId){
         //@TODO authentication
-        return commentServiceImp.postComment(commentRequest);
+        System.out.println("qualcosa");
+        return commentServiceImp.postComment(commentRequest,currentUser, articleId );
     }
 
     //@PublicEndpoint

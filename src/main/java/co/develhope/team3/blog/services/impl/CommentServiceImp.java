@@ -1,5 +1,8 @@
 package co.develhope.team3.blog.services.impl;
 
+import co.develhope.team3.blog.models.user.User;
+import co.develhope.team3.blog.payloads.response.CommentResponse;
+import co.develhope.team3.blog.security.models.UserPrincipal;
 import co.develhope.team3.blog.utils.AppConstants;
 import co.develhope.team3.blog.models.dto.CommentDto;
 import co.develhope.team3.blog.models.Article;
@@ -45,26 +48,22 @@ public class CommentServiceImp implements CommentService {
 
 
 
-    @Override
-    public HttpStatus postComment(CommentRequest commentRequest) {
+    public ResponseEntity<CommentResponse> postComment(CommentRequest commentRequest, UserPrincipal currentUser, Long articleId) {
 
 
         //AuthenticationContext.Principal principal = AuthenticationContext.get();
 
         Comment comment = new Comment();
-        Optional<Article> article = articleRepository.findById(commentRequest.getArticleId());
-        if(!article.isPresent()) return HttpStatus.BAD_REQUEST;
+        Optional<Article> article = articleRepository.findById(articleId);
+        if(!article.isPresent()) return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
         comment.setArticle(article.get());
-        /*
-        Optional<User> user = userRepository.findById(principal.getUserId());
-        if(!user.isPresent()) return HttpStatus.UNAUTHORIZED;
+        Optional<User> user = userRepository.findById(currentUser.getId());
+        if(!user.isPresent()) return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
         comment.setUser(user.get());
-
-         */
         comment.setContent(commentRequest.getContent());
         comment.setCreatedOn(System.currentTimeMillis());
         this.commentRepository.save(comment);
-        return HttpStatus.OK;
+        return new ResponseEntity<CommentResponse>(new CommentResponse(true , "Comment has been published") ,HttpStatus.OK);
     }
 
     @Override
