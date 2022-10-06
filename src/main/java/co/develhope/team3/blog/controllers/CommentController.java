@@ -2,6 +2,7 @@ package co.develhope.team3.blog.controllers;
 
 import co.develhope.team3.blog.models.dto.CommentDto;
 import co.develhope.team3.blog.payloads.request.CommentRequest;
+import co.develhope.team3.blog.payloads.response.CommentResponse;
 import co.develhope.team3.blog.security.models.CurrentUser;
 import co.develhope.team3.blog.security.models.UserPrincipal;
 import co.develhope.team3.blog.services.impl.CommentServiceImp;
@@ -18,7 +19,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/comment/")
+@RequestMapping("/api/comment")
 public class CommentController {
 
     @Autowired
