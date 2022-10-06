@@ -1,5 +1,7 @@
 package co.develhope.team3.blog.controllers;
 
+import co.develhope.team3.blog.models.user.User;
+import co.develhope.team3.blog.payloads.response.ApiResponse;
 import co.develhope.team3.blog.utils.AppConstants;
 import co.develhope.team3.blog.models.Article;
 import co.develhope.team3.blog.models.dto.UserDto;
@@ -51,11 +53,20 @@ public class UserController {
 
     @PutMapping("/{username}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<User> updateUser(@Valid @RequestBody User newUser,
+    public ResponseEntity<UserDto> updateUser(@Valid @RequestBody User newUser,
                                            @PathVariable(value = "username") String username, @CurrentUser UserPrincipal currentUser) {
-        User updatedUSer = userService.updateUser(newUser, username, currentUser);
+        UserDto updatedUser = userServiceBlog.updateUser(newUser, username, currentUser);
 
-        return new ResponseEntity< >(updatedUSer, HttpStatus.CREATED);
+        return new ResponseEntity<UserDto>(updatedUser, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{username}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse> deleteUser(@PathVariable(value = "username") String username,
+                                                  @CurrentUser UserPrincipal currentUser) {
+        ApiResponse apiResponse = userServiceBlog.deleteUser(username, currentUser);
+
+        return new ResponseEntity< >(apiResponse, HttpStatus.OK);
     }
 
 

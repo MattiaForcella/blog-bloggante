@@ -2,7 +2,9 @@ package co.develhope.team3.blog.payloads.response;
 
 import co.develhope.team3.blog.models.dto.UserDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.ToString;
 
+@ToString
 public class ApiResponse {
 
     @JsonProperty("success")
