@@ -54,7 +54,7 @@ public class UserServiceBlogImpl implements UserServiceBlog {
 
         User user = userRepository.findByUsername(username);
 
-        return new UserDto(
+        UserDto userDto = new UserDto(
                 user.getId(),
                 user.getIsActiveUser(),
                 user.getAbout(),
@@ -63,6 +63,9 @@ public class UserServiceBlogImpl implements UserServiceBlog {
                 user.getBan(),
                 user.getArticles()
         );
+        userDto.setRoles(user.getRoles());
+
+        return userDto;
     }
 
     @Override

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -32,6 +33,7 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<UserDto> getCurrentUser(@CurrentUser UserPrincipal currentUser){
 
+        //@TODO errore 401, non entra nel controller
         UserDto userDto = userServiceBlog.getCurrentUser(currentUser);
 
         return new ResponseEntity<UserDto>(userDto, HttpStatus.OK);
@@ -44,8 +46,8 @@ public class UserController {
         return new ResponseEntity<UserDto>(userDto, HttpStatus.OK);
     }
 
-    @GetMapping("/{username}/posts")
-    public ResponseEntity<PagedResponse> getPostsCreatedBy(@PathVariable(value = "username") String username,
+    @GetMapping("/{username}/article")
+    public ResponseEntity<PagedResponse> getArticlesCreatedBy(@PathVariable(value = "username") String username,
                                                            @RequestParam(value = "page", required = false, defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) Integer page,
                                                            @RequestParam(value = "size", required = false, defaultValue = AppConstants.DEFAULT_PAGE_SIZE) Integer size) {
         PagedResponse<Article> response = articleService.getArticlesCreatedBy(username, page, size);

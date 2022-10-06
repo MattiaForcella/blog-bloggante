@@ -2,7 +2,9 @@ package co.develhope.team3.blog.services.impl;
 
 import co.develhope.team3.blog.models.user.Role;
 import co.develhope.team3.blog.models.user.RoleName;
+import co.develhope.team3.blog.models.user.User;
 import co.develhope.team3.blog.repository.RoleRepository;
+import co.develhope.team3.blog.repository.UserRepository;
 import co.develhope.team3.blog.services.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,15 +17,28 @@ public class RoleServiceImpl implements RoleService {
 
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private UserRepository userRepository;
+
 
     @Override
-    public List<Role> defaultRole() {
+    public List<Role> assignDefaulRole(String username) {
+        User user =userRepository.findByUsername(username);
 
         List<Role> roles = new ArrayList<>();
+        if (userRepository.count() == 0) {
+            roles.add(roleRepository.findByName(RoleName.ROLE_USER));
+            roles.add(roleRepository.findByName(RoleName.ROLE_ADMIN));
+        } else {
+            roles.add(roleRepository.findByName(RoleName.ROLE_USER));
+        }
 
-        roles.add(roleRepository.findByName(RoleName.ROLE_USER));
-        if (roles == null) throw new RuntimeException("USER_ROLE_NOT_SET");
+            user.setRoles(roles);
+            userRepository.save(user);
 
-        return roles;
+        return user.getRoles();
+
     }
+
+
 }

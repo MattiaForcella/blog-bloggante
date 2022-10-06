@@ -1,5 +1,6 @@
 package co.develhope.team3.blog.security.jwt;
 
+import co.develhope.team3.blog.security.models.UserPrincipal;
 import co.develhope.team3.blog.security.services.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import java.security.Principal;
 import java.util.Date;
 
 @Component
@@ -22,14 +24,16 @@ public class JwtUtils {
     private Integer jwtExpirationMs;
 
     public String generateJwtToken(Authentication authentication) {
+        UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
 
-        UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + jwtExpirationMs);
 
         return
             Jwts.builder()
-                    .setSubject(userPrincipal.getUsername())
+                    .setSubject(Long.toString(principal.getId()))
                     .setIssuedAt(new Date())
-                    .setExpiration(new Date(new Date().getTime() + jwtExpirationMs))
+                    .setExpiration(expiryDate)
                     .signWith(SignatureAlgorithm.HS512, jwtSecret)
                     .compact();
     }

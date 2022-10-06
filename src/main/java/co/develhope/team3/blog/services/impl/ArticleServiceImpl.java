@@ -65,7 +65,7 @@ public class ArticleServiceImpl implements ArticleService {
 
         Article article = this.modelMapper.map(articleDto, Article.class);
         article.setImageName("default.png");
-        article.setCreatedOn(new Date());
+        article.setCreatedAt(new Date());
         article.setUser(user);
         article.setCategory(category);
 
@@ -254,7 +254,7 @@ public class ArticleServiceImpl implements ArticleService {
             UserDto userDto = modelMapper.map(article.getUser(), UserDto.class);
             articleDto.setUser(userDto);
             articleDto.setTitle(article.getTitle());
-            articleDto.setCreatedOn(article.getCreatedOn());
+            articleDto.setCreatedOn(article.getCreatedAt());
             articleDto.setUpdateOn(article.getUpdateOn());
             articleDto.setImageName(article.getImageName());
 
@@ -268,7 +268,7 @@ public class ArticleServiceImpl implements ArticleService {
         validatePageNumberAndSize(page, size);
         User user = userRepository.findByUsername(username);
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, CREATED_AT);
-        Page<Article> articles = articleRepository.findByCreatedBy(user.getId(), pageable);
+        Page<Article> articles = articleRepository.findByCreatedBy(user.getUsername(), pageable);
 
         List<Article> content = articles.getNumberOfElements() == 0 ? Collections.emptyList() : articles.getContent();
 

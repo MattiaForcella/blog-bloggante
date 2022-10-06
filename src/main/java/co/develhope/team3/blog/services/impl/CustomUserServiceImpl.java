@@ -15,8 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -63,14 +64,14 @@ public class CustomUserServiceImpl implements CustomUserService {
         );
 
 
-
         user.setActivationCode(UUID.randomUUID().toString());
         mailNotificationService.sendActivationEmail(user);
-
-
-        userRepository.save(user);
+        User result = userRepository.save(user);
 
         ApiResponse apiResponse = userToResponse(user);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/{userId}")
+                .buildAndExpand(result.getId()).toUri();
 
         return apiResponse;
     }

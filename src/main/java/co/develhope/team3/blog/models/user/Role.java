@@ -1,5 +1,6 @@
 package co.develhope.team3.blog.models.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -19,7 +20,8 @@ public class Role {
     @Column
     private RoleName name;
 
-    //Codice aggiunto per rispecchiare i vincoli di partecipazione
+    //Codice aggiunto per rispecchiare i vincoli di partecipazione+
+    @JsonIgnore
     @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "roles")
     private List<User> users = new ArrayList<>();
 

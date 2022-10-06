@@ -27,9 +27,9 @@ public class Article {
     @Column(nullable = false, name = "is_news")
     private Boolean isNews;
 
-
-    private Date createdOn;
-
+    @Column
+    private Date createdAt;
+    @Column
     private Date updateOn;
 
     private String imageName;
@@ -39,6 +39,7 @@ public class Article {
     //@JsonMAnagedReference
     private User user = new User();
 
+    @Column
     private String createdBy = user.getUsername();
 
 

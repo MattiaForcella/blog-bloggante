@@ -1,6 +1,6 @@
 package co.develhope.team3.blog.security.jwt;
 
-import co.develhope.team3.blog.security.services.UserDetailsServiceImpl;
+import co.develhope.team3.blog.services.impl.CustomUserDetailsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     private JwtUtils jwtUtils;
 
     @Autowired
-    private UserDetailsServiceImpl userDetailsService;
+    private CustomUserDetailsServiceImpl userDetailsService;
 
     private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
 

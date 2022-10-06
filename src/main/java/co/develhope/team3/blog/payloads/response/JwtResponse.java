@@ -1,5 +1,7 @@
 package co.develhope.team3.blog.payloads.response;
 
+import co.develhope.team3.blog.models.user.Role;
+
 import java.util.List;
 
 public class JwtResponse {
@@ -8,9 +10,9 @@ public class JwtResponse {
     private Long id;
     private String username;
     private String email;
-    private List<String> roles;
+    private List<Role> roles;
 
-    public JwtResponse(String token, Long id, String username, String email, List<String> roles) {
+    public JwtResponse(String token, Long id, String username, String email, List<Role> roles) {
         this.token = token;
         this.id = id;
         this.username = username;
@@ -50,11 +52,11 @@ public class JwtResponse {
         this.email = email;
     }
 
-    public List<String> getRoles() {
+    public List<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<String> roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
 }

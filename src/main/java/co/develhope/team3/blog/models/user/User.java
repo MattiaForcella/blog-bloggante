@@ -2,6 +2,7 @@ package co.develhope.team3.blog.models.user;
 
 import co.develhope.team3.blog.models.Article;
 import co.develhope.team3.blog.models.Comment;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,6 +31,7 @@ public class User {
     private String username;
 
     //TODO quando in futurò verrà implementata la classe relativa alla registrazione, ricordarsi di aggiungere la codifica dalla libreria di Pasquale (giustifica lenght = 150)
+    @JsonIgnore
     @Column(length = 150)
     private String password;
 
@@ -68,7 +70,7 @@ public class User {
     }
 
     public void setRole(Role role){
-        roles.add(role);
+        this.roles.add(role);
     }
     @Override
     public String toString() {

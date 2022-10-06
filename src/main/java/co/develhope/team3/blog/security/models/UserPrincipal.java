@@ -1,6 +1,7 @@
 package co.develhope.team3.blog.security.models;
 
 import co.develhope.team3.blog.models.Article;
+import co.develhope.team3.blog.models.user.Role;
 import co.develhope.team3.blog.models.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,6 +28,8 @@ public class UserPrincipal implements UserDetails{
 
     private Collection<? extends GrantedAuthority> authorities;
 
+    public UserPrincipal() {
+    }
 
     public UserPrincipal(Long id, String username, String email, String password,
                          Collection<? extends GrantedAuthority> authorities) {
@@ -105,5 +108,6 @@ public class UserPrincipal implements UserDetails{
     public int hashCode() {
         return Objects.hash(id);
     }
+
 
 }

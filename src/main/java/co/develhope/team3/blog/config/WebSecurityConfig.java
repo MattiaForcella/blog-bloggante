@@ -2,7 +2,7 @@ package co.develhope.team3.blog.config;
 
 import co.develhope.team3.blog.security.jwt.AuthEntryPointJwt;
 import co.develhope.team3.blog.security.jwt.AuthTokenFilter;
-import co.develhope.team3.blog.security.services.UserDetailsServiceImpl;
+import co.develhope.team3.blog.services.impl.CustomUserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig {
 
     @Autowired
-    UserDetailsServiceImpl userDetailsService;
+    CustomUserDetailsServiceImpl userDetailsService;
 
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;

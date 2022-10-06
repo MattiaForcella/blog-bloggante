@@ -36,7 +36,7 @@ public class UserActivationImpl {
         user.setIsActiveUser(true);
         user.setActivationCode(null);
 
-        List<Role> roles = roleService.defaultRole();
+        List<Role> roles = roleService.assignDefaulRole(user.getUsername());
         user.setRoles(roles);
 
         userRepository.save(user);

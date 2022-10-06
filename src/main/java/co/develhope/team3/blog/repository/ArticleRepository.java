@@ -23,7 +23,7 @@ public interface ArticleRepository extends JpaRepository<Article,Long> {
     @Query(value = "select a from Article a where a.is_news = 1", nativeQuery = true)
     List<Article> findByIsNews();
 
-    Page<Article> findByCreatedBy(Long id, Pageable pageable);
+    Page<Article> findByCreatedBy(String username, Pageable pageable);
 
     List<Article> findByUser(User user);
 }
