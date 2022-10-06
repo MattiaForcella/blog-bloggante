@@ -106,14 +106,15 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public ArticleResponse getAllArticles(Integer pageNumber, Integer pageSize, String sortBy, String sortDir) {
-        Sort sort = (sortDir.equalsIgnoreCase("asc")) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+    public ArticleResponse getAllArticles(Integer pageNumber, Integer pageSize) {
 
-        Pageable p = PageRequest.of(pageNumber, pageSize, sort);
+        validatePageNumberAndSize(pageNumber,pageSize);
 
-        Page<Article> pageArticle = this.articleRepository.findAll(p);
+        Pageable p = PageRequest.of(pageNumber, pageSize, Sort.Direction.DESC, CREATED_AT);
 
-        List<Article> allArticles = pageArticle.getContent();
+        Page<Article> articles = articleRepository.findAll(p);
+
+        List<Article> allArticles = articles.getContent();
 
         List<ArticleDto> articleDtos = allArticles.stream().map((article) -> this.modelMapper.map(article, ArticleDto.class))
                 .collect(Collectors.toList());
@@ -121,11 +122,11 @@ public class ArticleServiceImpl implements ArticleService {
         ArticleResponse articleResponse= new ArticleResponse();
 
         articleResponse.setContent(articleDtos);
-        articleResponse.setPageNumber(pageArticle.getNumber());
-        articleResponse.setPageSize(pageArticle.getSize());
-        articleResponse.setTotalElements(pageArticle.getTotalElements());
-        articleResponse.setTotalPages(pageArticle.getTotalPages());
-        articleResponse.setLastPage(pageArticle.isLast());
+        articleResponse.setPageNumber(articles.getNumber());
+        articleResponse.setPageSize(articles.getSize());
+        articleResponse.setTotalElements(articles.getTotalElements());
+        articleResponse.setTotalPages(articles.getTotalPages());
+        articleResponse.setLastPage(articles.isLast());
 
         return articleResponse;
     }
