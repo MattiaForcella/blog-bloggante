@@ -20,12 +20,9 @@ public class Role {
     @Column
     private RoleName name;
 
-    //Codice aggiunto per rispecchiare i vincoli di partecipazione+
     @JsonIgnore
     @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "roles")
     private List<User> users = new ArrayList<>();
-
-
 
 
     public void setUser(User user) {
@@ -35,6 +32,5 @@ public class Role {
     public void removeUser(User user) {
         users.remove(user);
     }
-
 
 }

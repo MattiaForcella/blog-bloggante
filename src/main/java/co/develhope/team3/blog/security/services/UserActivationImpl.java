@@ -3,18 +3,15 @@ package co.develhope.team3.blog.security.services;
 import co.develhope.team3.blog.models.dto.SignupActivationDto;
 import co.develhope.team3.blog.models.dto.UserDto;
 import co.develhope.team3.blog.models.user.Role;
-import co.develhope.team3.blog.models.user.RoleName;
 import co.develhope.team3.blog.models.user.User;
 import co.develhope.team3.blog.payloads.response.ApiResponse;
 import co.develhope.team3.blog.repository.RoleRepository;
 import co.develhope.team3.blog.repository.UserRepository;
 import co.develhope.team3.blog.services.RoleService;
-import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

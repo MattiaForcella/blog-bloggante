@@ -8,7 +8,6 @@ import co.develhope.team3.blog.payloads.response.ApiResponse;
 import co.develhope.team3.blog.payloads.response.JwtResponse;
 import co.develhope.team3.blog.security.jwt.JwtUtils;
 import co.develhope.team3.blog.security.services.UserActivationImpl;
-import co.develhope.team3.blog.security.services.UserDetailsImpl;
 import co.develhope.team3.blog.services.CustomUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,8 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/auth")

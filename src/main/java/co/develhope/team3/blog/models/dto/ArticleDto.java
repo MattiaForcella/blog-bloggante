@@ -21,14 +21,10 @@ public class ArticleDto {
     private String title;
     @NotBlank(message = "il contenuto non puo essere vuoto")
     private String content;
+
     private Date createdAt;
     private Date updateOn;
-
-
     private UserDto user;
-
-
-
 
     private List<Tag> tags= new ArrayList<>();
     private List<Comment> commentDtos = new ArrayList<>();
@@ -37,10 +33,4 @@ public class ArticleDto {
     private Boolean isNews;
     private String imageName;
 
-    public ArticleDto(String title, String content, List<Tag> tags, Boolean isNews) {
-        this.title = title;
-        this.content = content;
-        this.tags = tags;
-        this.isNews = isNews;
-    }
 }

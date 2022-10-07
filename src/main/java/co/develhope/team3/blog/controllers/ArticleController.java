@@ -42,10 +42,9 @@ public class ArticleController {
     @Autowired
     private CategoryService categoryService;
 
-
-
     @Value("${project.image}")
     private String path;
+
 
 
 

@@ -1,4 +1,4 @@
-package co.develhope.team3.blog.services;
+package co.develhope.team3.blog.services.impl;
 
 import co.develhope.team3.blog.models.user.User;
 import org.springframework.beans.factory.annotation.Autowired;

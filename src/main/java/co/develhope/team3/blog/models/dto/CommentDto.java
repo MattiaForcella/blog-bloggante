@@ -14,7 +14,6 @@ public class CommentDto {
 
     @NotNull
     private Long id;
-    //Ricordarsi di fare le converesioni per il passaggio da e in database
 
     private Date createdOn;
     @NotBlank(message = "il commento non puo essere vuoto")

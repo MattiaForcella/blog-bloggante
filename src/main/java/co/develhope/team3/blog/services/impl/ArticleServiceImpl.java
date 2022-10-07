@@ -47,14 +47,6 @@ public class ArticleServiceImpl implements ArticleService {
     private UserRepository userRepository;
     @Autowired
     private CategoryRepository categoryRepository;
-    @Autowired
-    private TagRepository tagRepository;
-    @Autowired
-    private CommentRepository commentRepository;
-    @Autowired
-    private TagServiceImpl tagServiceImpl;
-    @Autowired
-    CommentServiceImpl commentService;
 
 
 

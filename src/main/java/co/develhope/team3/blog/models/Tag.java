@@ -1,6 +1,5 @@
 package co.develhope.team3.blog.models;
 
-import co.develhope.team3.blog.repository.TagRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

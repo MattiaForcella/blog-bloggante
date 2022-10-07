@@ -1,7 +1,5 @@
 package co.develhope.team3.blog.security.models;
 
-import co.develhope.team3.blog.models.Article;
-import co.develhope.team3.blog.models.user.Role;
 import co.develhope.team3.blog.models.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;

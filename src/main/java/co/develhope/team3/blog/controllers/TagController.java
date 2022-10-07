@@ -3,10 +3,7 @@ package co.develhope.team3.blog.controllers;
 import co.develhope.team3.blog.models.Tag;
 import co.develhope.team3.blog.models.dto.TagDto;
 import co.develhope.team3.blog.payloads.request.TagDeleteRequest;
-import co.develhope.team3.blog.payloads.request.TagRequest;
-import co.develhope.team3.blog.payloads.response.ApiResponse;
 import co.develhope.team3.blog.payloads.response.PagedResponse;
-import co.develhope.team3.blog.repository.TagRepository;
 import co.develhope.team3.blog.security.models.CurrentUser;
 import co.develhope.team3.blog.security.models.UserPrincipal;
 import co.develhope.team3.blog.services.TagService;
@@ -19,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.security.auth.message.AuthException;
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/tags")
@@ -27,6 +23,7 @@ public class TagController {
 
     @Autowired
     private TagService tagService;
+
 
 
     @GetMapping("/alltag")

@@ -1,9 +1,6 @@
 package co.develhope.team3.blog.models;
 
-import co.develhope.team3.blog.models.dto.UserDto;
 import co.develhope.team3.blog.models.user.User;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

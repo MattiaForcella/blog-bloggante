@@ -28,6 +28,8 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
+
+
     @PostMapping("/{articleId}/comments")
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_EDITOR') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<CommentResponse> postComment(@RequestBody @Valid CommentRequest commentRequest,
@@ -36,7 +38,6 @@ public class CommentController {
         return commentService.postComment(commentRequest,currentUser, articleId );
     }
 
-    //@RoleSecurity(value = "ROLE_ADMIN")
     @GetMapping("/mod")
     private ResponseEntity<List<CommentDto>> getFlaggedComments (){
 
@@ -70,7 +71,7 @@ public class CommentController {
         return new ResponseEntity<Comment>(updatedComment, HttpStatus.OK);
 
     }
-//
+
 
     @DeleteMapping("/{articleId}/delete-comment/{commentId}" )
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_EDITOR') or hasRole('ROLE_ADMIN')")
@@ -82,6 +83,5 @@ public class CommentController {
 
         return new ResponseEntity<ApiResponse>(response,HttpStatus.OK);
     }
-
 
 }

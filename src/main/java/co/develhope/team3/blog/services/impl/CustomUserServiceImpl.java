@@ -2,13 +2,11 @@ package co.develhope.team3.blog.services.impl;
 
 import co.develhope.team3.blog.models.dto.UserDto;
 import co.develhope.team3.blog.exceptions.BlogException;
-import co.develhope.team3.blog.models.user.Role;
 import co.develhope.team3.blog.models.user.User;
 import co.develhope.team3.blog.payloads.request.SignupRequest;
 import co.develhope.team3.blog.payloads.response.ApiResponse;
 import co.develhope.team3.blog.repository.UserRepository;
 import co.develhope.team3.blog.services.CustomUserService;
-import co.develhope.team3.blog.services.MailNotificationService;
 import co.develhope.team3.blog.services.RoleService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 import java.util.UUID;
 
 @Service

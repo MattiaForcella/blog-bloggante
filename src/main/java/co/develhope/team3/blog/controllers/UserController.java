@@ -1,7 +1,6 @@
 package co.develhope.team3.blog.controllers;
 
 import co.develhope.team3.blog.payloads.request.UserAdministrationRequest;
-import co.develhope.team3.blog.payloads.response.ApiResponse;
 import co.develhope.team3.blog.utils.AppConstants;
 import co.develhope.team3.blog.models.Article;
 import co.develhope.team3.blog.models.dto.UserDto;

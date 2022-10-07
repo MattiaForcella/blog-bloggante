@@ -1,13 +1,11 @@
 
 package co.develhope.team3.blog.services.impl;
 
-import co.develhope.team3.blog.exceptions.BlogException;
 import co.develhope.team3.blog.models.dto.UserDto;
 import co.develhope.team3.blog.models.user.Role;
 import co.develhope.team3.blog.models.user.RoleName;
 import co.develhope.team3.blog.models.user.User;
 import co.develhope.team3.blog.payloads.request.UserAdministrationRequest;
-import co.develhope.team3.blog.payloads.response.ApiResponse;
 import co.develhope.team3.blog.repository.RoleRepository;
 import co.develhope.team3.blog.repository.UserRepository;
 import co.develhope.team3.blog.security.models.CurrentUser;
@@ -15,8 +13,7 @@ import co.develhope.team3.blog.security.models.UserPrincipal;
 import co.develhope.team3.blog.services.UserServiceBlog;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.access.AccessDeniedException;
+
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 

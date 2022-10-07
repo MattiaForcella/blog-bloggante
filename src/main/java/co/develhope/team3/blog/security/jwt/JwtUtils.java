@@ -1,7 +1,6 @@
 package co.develhope.team3.blog.security.jwt;
 
 import co.develhope.team3.blog.security.models.UserPrincipal;
-import co.develhope.team3.blog.security.services.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
-import java.security.Principal;
 import java.util.Date;
 
 @Component

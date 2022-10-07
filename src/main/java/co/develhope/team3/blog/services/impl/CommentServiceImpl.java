@@ -15,10 +15,6 @@ public class CommentServiceImpl {
         return true;
     }
 
-    /*public List<Comment> getComments(Long commentId) {
-        return commentRepository.findByPostId(commentId);
-    }*/
-
     public void comment(Comment comment) {
         commentRepository.save(comment);
     }
