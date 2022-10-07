@@ -25,19 +25,16 @@ public class CommentController {
     @Autowired
     private CommentServiceImp commentServiceImp;
 
-    //@HierarchicalSecurity(bottomRole = "ROLE_USER")
     @PostMapping("/{articleId}")
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_EDITOR') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<CommentResponse> postComment(@RequestBody @Valid CommentRequest commentRequest,
                                                        @CurrentUser UserPrincipal currentUser,
                                                        @PathVariable Long articleId){
-        //@TODO authentication
-        System.out.println("qualcosa");
         return commentServiceImp.postComment(commentRequest,currentUser, articleId );
     }
 
     //@PublicEndpoint
-    @GetMapping("{commentId}/comment-details")
+    @GetMapping("/{commentId}/comment-details")
     public ResponseEntity<CommentDto> getCommentFromId (@PathVariable Long id){
         try {
             return  commentServiceImp.getCommentDetails(id);
