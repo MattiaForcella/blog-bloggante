@@ -4,12 +4,13 @@ import co.develhope.team3.blog.models.Article;
 import co.develhope.team3.blog.models.dto.ArticleDto;
 import co.develhope.team3.blog.models.dto.CategoryDto;
 import co.develhope.team3.blog.models.dto.CommentDto;
-import co.develhope.team3.blog.models.Tag;
 import co.develhope.team3.blog.payloads.response.ArticleResponse;
 import co.develhope.team3.blog.payloads.response.PagedResponse;
 import co.develhope.team3.blog.security.models.UserPrincipal;
 import org.springframework.http.ResponseEntity;
 
+import javax.security.auth.message.AuthException;
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 
@@ -24,25 +25,23 @@ public interface ArticleService {
 
     ArticleDto getArticleById(Long id);
 
-    ArticleDto deleteArticle(Long articleId) ;
+    ArticleDto deleteArticle(Long articleId, UserPrincipal currentUser) throws AccessDeniedException;
 
-    ArticleDto updateArticle(ArticleDto articleDto, Long articleId)  ;
-
-
-
-    ArticleDto updateTitleArticle(Long articleId, String title);
+    ArticleDto updateArticle(ArticleDto articleDto, Long articleId, UserPrincipal currentUser, Long categoryId) throws AccessDeniedException;
 
 
-    ArticleDto updateContentArticle(Long articleId, String content)  ;
-
-    ArticleDto updateNewsArticle(Long articleId, Boolean news)  ;
-
-    ArticleDto updateTagsArticle(Long articleId, List<Tag> tags )  ;
-
-    ArticleDto updateCommentArticle(Long articleId, CommentDto commentId )  ;
 
 
-    ArticleDto updateCategoriesArticle (Long articleId, CategoryDto categoryDto) ;
+
+
+    ArticleDto updateContentArticle(Long articleId, String content, UserPrincipal userPrincipal) throws AuthException;
+
+
+
+    ArticleDto updateCommentArticle(Long articleId, CommentDto commentId, UserPrincipal userPrincipal) throws AuthException;
+
+
+    ArticleDto updateCategoriesArticle (Long articleId, CategoryDto categoryDto, UserPrincipal principal) throws AuthException;
 
     List<ArticleDto> searchPosts(String keywords);
 

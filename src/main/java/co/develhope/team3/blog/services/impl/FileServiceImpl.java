@@ -1,7 +1,10 @@
-/*
+
 package co.develhope.team3.blog.services.impl;
 
+import co.develhope.team3.blog.models.user.RoleName;
+import co.develhope.team3.blog.security.models.UserPrincipal;
 import co.develhope.team3.blog.services.FileService;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,35 +16,32 @@ import java.util.UUID;
 
 @Service
 public class FileServiceImpl implements FileService {
-    @Override
-    public String uploadImage(String path, MultipartFile file, AuthenticationContext.Principal principal, Long userId) throws IOException, AuthException {
-        // File name
+    public String uploadImage(String path, MultipartFile file, UserPrincipal principal, Long userId) throws IOException, AuthException {
 
-        if (!principal.getUserId().equals(userId)) {
-            throw new AuthException("Unauthorized editor, editor_id mismatch");
+        if (userId.equals(principal.getId())
+                || principal.getAuthorities().contains(new SimpleGrantedAuthority(RoleName.ROLE_ADMIN.toString()))
+                || principal.getAuthorities().contains(new SimpleGrantedAuthority(RoleName.ROLE_EDITOR.toString())) ) {
+
+
+            String name = file.getOriginalFilename();
+
+            String randomID = UUID.randomUUID().toString();
+            String fileName1 = randomID.concat(name.substring(name.lastIndexOf(".")));
+
+            String filePath = path + File.separator + fileName1;
+
+
+            File f = new File(path);
+            if (!f.exists()) {
+                f.mkdir();
+            }
+
+            Files.copy(file.getInputStream(), Paths.get(filePath));
+
+            return fileName1;
         }
 
-        String name = file.getOriginalFilename();
-        // abc.png
-
-        // random name generate file
-        String randomID = UUID.randomUUID().toString();
-        String fileName1 = randomID.concat(name.substring(name.lastIndexOf(".")));
-
-        // Full path
-        String filePath = path + File.separator + fileName1;
-
-        // create folder if not created
-        File f = new File(path);
-        if (!f.exists()) {
-            f.mkdir();
-        }
-
-        // file copy
-
-        Files.copy(file.getInputStream(), Paths.get(filePath));
-
-        return fileName1;
+        throw  new AuthException("You don't have permission to update image of this article");
     }
 
     @Override
@@ -53,4 +53,4 @@ public class FileServiceImpl implements FileService {
     }
 }
 
- */
+

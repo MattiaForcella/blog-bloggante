@@ -7,6 +7,7 @@ import co.develhope.team3.blog.models.dto.UserDto;
 import co.develhope.team3.blog.exceptions.ResourceNotFoundException;
 import co.develhope.team3.blog.models.*;
 
+import co.develhope.team3.blog.models.user.RoleName;
 import co.develhope.team3.blog.models.user.User;
 import co.develhope.team3.blog.payloads.response.ArticleResponse;
 import co.develhope.team3.blog.payloads.response.PagedResponse;
@@ -22,9 +23,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 
+import javax.security.auth.message.AuthException;
+import javax.validation.Valid;
+import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -139,104 +145,107 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public ArticleDto deleteArticle(Long articleId)   {
+    public ArticleDto deleteArticle(Long articleId, UserPrincipal currentUser) throws AccessDeniedException {
 
         Article article = this.articleRepository.findById(articleId)
                 .orElseThrow(() -> new ResourceNotFoundException("Article ", "article id", articleId));
         ArticleDto articleDto = this.modelMapper.map(article, ArticleDto.class);
 
-        this.articleRepository.delete(article);
-        return articleDto;
+        if (article.getUser().getId().equals(currentUser.getId())
+                || currentUser.getAuthorities().contains(new SimpleGrantedAuthority(RoleName.ROLE_ADMIN.toString()))
+                || currentUser.getAuthorities().contains(new SimpleGrantedAuthority(RoleName.ROLE_EDITOR.toString())) ) {
+            articleRepository.deleteById(articleId);
+            return articleDto;
+        } else throw new AccessDeniedException("you don't have permission to delete this post");
+
+
     }
 
     @Override
-    public ArticleDto updateArticle(ArticleDto articleDto, Long articleId)   {
-
-        Article article = this.articleRepository.findById(articleId)
-                .orElseThrow(()-> new ResourceNotFoundException("Article", "article id", articleId));
-        article.setIsNews(articleDto.getIsNews());
-        article.setImageName(articleDto.getImageName());
-        article.setUpdateOn(new Date());
-
-        Article updateArticle = this.articleRepository.save(article);
-        return this.modelMapper.map(updateArticle, ArticleDto.class);
-    }
-
-    @Override
-    public ArticleDto updateTitleArticle(Long articleId, String title)   {
-
-        Article article = this.articleRepository.findById(articleId)
-                .orElseThrow(()-> new ResourceNotFoundException("Article", "article id", articleId));
-        article.setTitle(title);
-
-        article.setUpdateOn(new Date());
-        Article updateArticle = this.articleRepository.save(article);
-
-        return this.modelMapper.map(updateArticle,ArticleDto.class);
-    }
-
-    @Override
-    public ArticleDto updateContentArticle(Long articleId, String content) {
-
-        Article article = this.articleRepository.findById(articleId)
-                .orElseThrow(()-> new ResourceNotFoundException("Article", "article id", articleId));
-        article.setContent(content);
-
-        article.setUpdateOn(new Date());
-        Article updateArticle = this.articleRepository.save(article);
-
-        return this.modelMapper.map(updateArticle, ArticleDto.class);
-    }
-
-    @Override
-    public ArticleDto updateNewsArticle(Long articleId, Boolean news) {
-
-        Article article = this.articleRepository.findById(articleId)
-                .orElseThrow(()-> new ResourceNotFoundException("Article", "article id", articleId));
-        article.setIsNews(news);
-        article.setUpdateOn(new Date());
-        Article updateArticle = this.articleRepository.save(article);
-
-        return this.modelMapper.map(updateArticle, ArticleDto.class);
-    }
-
-    @Override
-    public ArticleDto updateTagsArticle(Long articleId, List<Tag> tags )   {
-
-        Article article = this.articleRepository.findById(articleId)
-                .orElseThrow(()-> new ResourceNotFoundException("Article", "article id", articleId));
-        article.setTags(tags);
-        article.setUpdateOn(new Date());
-
-        articleRepository.save(article);
-
-        return this.modelMapper.map(article,ArticleDto.class);
-    }
-
-    @Override
-    public ArticleDto updateCommentArticle(Long articleId , CommentDto commentDto )  {
-
-        Article article = this.articleRepository.findById(articleId)
-                .orElseThrow(()-> new ResourceNotFoundException("Article", "article id", articleId));
-        Category commentUpdate = this.modelMapper.map(commentDto, Category.class);
-        article.setCategory(commentUpdate);
-        article.setUpdateOn(new Date());
-        articleRepository.save(article);
-        return this.modelMapper.map(article,ArticleDto.class);
-    }
-
-    @Override
-    public ArticleDto updateCategoriesArticle( Long articleId, CategoryDto categoryDto)   {
+    public ArticleDto updateArticle(@Valid ArticleDto articleDto, Long articleId, UserPrincipal currentUser, Long categoryId) throws AccessDeniedException {
 
         Article article = this.articleRepository.findById(articleId)
                 .orElseThrow(()-> new ResourceNotFoundException("Article", "article id", articleId));
 
-        Category categoryUpdate = this.modelMapper.map(categoryDto, Category.class);
-        article.setCategory(categoryUpdate);
-        article.setUpdateOn(new Date());
-        articleRepository.save(article);
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new ResourceNotFoundException("Category", "category id id", categoryId));
 
-        return this.modelMapper.map(article,ArticleDto.class);
+        if (article.getUser().getId().equals(currentUser.getId())
+                || currentUser.getAuthorities().contains(new SimpleGrantedAuthority(RoleName.ROLE_ADMIN.toString()))
+                || currentUser.getAuthorities().contains(new SimpleGrantedAuthority((RoleName.ROLE_EDITOR.toString())))) {
+
+            if (articleDto.getIsNews() != null) article.setIsNews(articleDto.getIsNews());
+            if (articleDto.getTags() != null) article.setTags(articleDto.getTags());
+            if (articleDto.getContent() != null) article.setContent(articleDto.getContent());
+            if (articleDto.getTitle() != null) article.setTitle(articleDto.getTitle());
+
+            article.setUpdateOn(new Date());
+
+            Article updateArticle = this.articleRepository.save(article);
+            return this.modelMapper.map(updateArticle, ArticleDto.class);
+        }
+        throw new AccessDeniedException("You don't have permission for update this article");
+    }
+
+    @Override
+    public ArticleDto updateContentArticle(Long articleId, String content, UserPrincipal userPrincipal) throws AuthException {
+
+        Article article = this.articleRepository.findById(articleId)
+                .orElseThrow(()-> new ResourceNotFoundException("Article", "article id", articleId));
+
+        if (article.getUser().getId().equals(userPrincipal.getId())
+                || userPrincipal.getAuthorities().contains(new SimpleGrantedAuthority(RoleName.ROLE_ADMIN.toString()))
+                || userPrincipal.getAuthorities().contains(new SimpleGrantedAuthority((RoleName.ROLE_EDITOR.toString())))) {
+
+            article.setContent(content);
+            article.setUpdateOn(new Date());
+
+            Article updateArticle = this.articleRepository.save(article);
+
+            return this.modelMapper.map(updateArticle, ArticleDto.class);
+        }
+        throw new AuthException("You don't have permission for update content of this article");
+    }
+
+
+    @Override
+    public ArticleDto updateCommentArticle(Long articleId , CommentDto commentDto, UserPrincipal userPrincipal) throws AuthException {
+
+        Article article = this.articleRepository.findById(articleId)
+                .orElseThrow(()-> new ResourceNotFoundException("Article", "article id", articleId));
+
+        if (article.getUser().getId().equals(userPrincipal.getId())
+                || userPrincipal.getAuthorities().contains(new SimpleGrantedAuthority(RoleName.ROLE_ADMIN.toString()))) {
+
+            Category commentUpdate = this.modelMapper.map(commentDto, Category.class);
+            article.setCategory(commentUpdate);
+            article.setUpdateOn(new Date());
+            articleRepository.save(article);
+
+            return this.modelMapper.map(article, ArticleDto.class);
+        }
+        throw new AuthException("You don't have permission for update comments");
+    }
+
+    @Override
+    public ArticleDto updateCategoriesArticle(Long articleId, CategoryDto categoryDto, UserPrincipal principal) throws AuthException {
+
+        Article article = this.articleRepository.findById(articleId)
+                .orElseThrow(()-> new ResourceNotFoundException("Article", "article id", articleId));
+
+        if (article.getUser().getId().equals(principal.getId())
+                || principal.getAuthorities().contains(new SimpleGrantedAuthority(RoleName.ROLE_ADMIN.toString()))
+                || principal.getAuthorities().contains(new SimpleGrantedAuthority((RoleName.ROLE_EDITOR.toString())))) {
+
+            Category categoryUpdate = this.modelMapper.map(categoryDto, Category.class);
+            article.setCategory(categoryUpdate);
+            article.setUpdateOn(new Date());
+            articleRepository.save(article);
+
+            return this.modelMapper.map(article, ArticleDto.class);
+        }
+
+        throw new AuthException("You don't have permission for update category of this article ");
     }
 
     @Override
