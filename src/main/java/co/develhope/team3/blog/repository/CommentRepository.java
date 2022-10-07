@@ -8,14 +8,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface CommentRepository extends JpaRepository<Comment,Long> {
 
-
-    Page<Comment> findAllByArticleId(Long article_id, Pageable p);
 
     @Query(value = "SELECT * FROM comments WHERE flag > 0",
             countQuery = "SELECT count(*) FROM comments WHERE flag > 0 ",
             nativeQuery = true)
     Page<Comment> findAllFlaggedComments(Pageable p);
+
+    Page<Comment> findByArticleId(Long articleId, Pageable p);
 }

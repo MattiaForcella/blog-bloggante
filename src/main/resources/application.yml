@@ -1,6 +1,9 @@
 server:
   port: 5050
 spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   datasource:
     url: jdbc:mysql://localhost:3306/springblog3?enabledTLSProtocols=TLSv1.2
     username: root

@@ -1,47 +1,39 @@
 package co.develhope.team3.blog.controllers;
 
+import co.develhope.team3.blog.models.Comment;
 import co.develhope.team3.blog.models.dto.CommentDto;
 import co.develhope.team3.blog.payloads.request.CommentRequest;
+import co.develhope.team3.blog.payloads.response.ApiResponse;
 import co.develhope.team3.blog.payloads.response.CommentResponse;
+import co.develhope.team3.blog.payloads.response.PagedResponse;
 import co.develhope.team3.blog.security.models.CurrentUser;
 import co.develhope.team3.blog.security.models.UserPrincipal;
-import co.develhope.team3.blog.services.impl.CommentServiceImp;
+import co.develhope.team3.blog.services.CommentService;
+import co.develhope.team3.blog.utils.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.security.auth.message.AuthException;
 import javax.validation.Valid;
 import java.util.List;
 
 
 
 @RestController
-@RequestMapping("/api/comment")
+@RequestMapping("/api/articles")
 public class CommentController {
 
     @Autowired
-    private CommentServiceImp commentServiceImp;
+    private CommentService commentService;
 
-    @PostMapping("/{articleId}")
+    @PostMapping("/{articleId}/comments")
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_EDITOR') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<CommentResponse> postComment(@RequestBody @Valid CommentRequest commentRequest,
                                                        @CurrentUser UserPrincipal currentUser,
                                                        @PathVariable Long articleId){
-        return commentServiceImp.postComment(commentRequest,currentUser, articleId );
-    }
-
-    //@PublicEndpoint
-    @GetMapping("/{commentId}/comment-details")
-    public ResponseEntity<CommentDto> getCommentFromId (@PathVariable Long id){
-        try {
-            return  commentServiceImp.getCommentDetails(id);
-        } catch (AuthException e) {
-            throw new RuntimeException(e);
-
-        }
+        return commentService.postComment(commentRequest,currentUser, articleId );
     }
 
     //@RoleSecurity(value = "ROLE_ADMIN")
@@ -49,30 +41,46 @@ public class CommentController {
     private ResponseEntity<List<CommentDto>> getFlaggedComments (){
 
         //TODO authentication
-        return commentServiceImp.getFlaggedComments();
+        return commentService.getFlaggedComments();
     }
 
-    //@PublicEndpoint()
     @GetMapping("/{articleId}/comment-list")
-    public ResponseEntity<List<CommentDto>> getAllArticleComments(@PathVariable() Long articleId){
-        return commentServiceImp.getAllArticleComments(articleId);
+    public ResponseEntity<PagedResponse<Comment>>
+    getAllArticleComments(@PathVariable() Long articleId,
+                          @RequestParam(name = "page", required = false, defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) Integer page,
+                          @RequestParam(name = "size", required = false, defaultValue = AppConstants.DEFAULT_PAGE_SIZE) Integer size){
+
+        //@TODO VA IN LOOP
+        PagedResponse<Comment> comments = commentService.getAllArticleComments(articleId,page,size);
+        return new ResponseEntity<PagedResponse<Comment>>(comments, HttpStatus.OK);
 
     }
 
-    //@HierarchicalSecurity(bottomRole = "USER_ROLE")
-    @PutMapping("/edit-comment")
-    public ResponseEntity<CommentDto> putComment (@RequestBody @Valid CommentDto commentDto){
 
-        //@TODO authentication
-        return commentServiceImp.putComment(commentDto);
+    @PutMapping("/{articleId}/edit-comment/{commentId}")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_EDITOR') or hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Comment> putComment (@RequestBody @Valid CommentDto commentDto,
+                                                  @PathVariable Long articleId,
+                                                  @PathVariable Long commentId,
+                                                  @CurrentUser UserPrincipal userPrincipal){
+
+        Comment updatedComment = commentService.putComment(articleId, commentId, commentDto, userPrincipal);
+
+        //@TODO modifica il commento ma la risposta va in loop
+        return new ResponseEntity<Comment>(updatedComment, HttpStatus.OK);
 
     }
 //
-    //@HierarchicalSecurity(bottomRole = "USER_ROLE")
-    @DeleteMapping("/api/rule/delete-comment/{id}" )
-    public ResponseEntity<CommentDto> deleteComment(@PathVariable Long comment_id){
-        //@TODO authentication
-        return commentServiceImp.deleteComment(comment_id);
+
+    @DeleteMapping("/{articleId}/delete-comment/{commentId}" )
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_EDITOR') or hasRole('ROLE_ADMIN')")
+    public ResponseEntity<ApiResponse> deleteComment(@PathVariable Long commentId,
+                                                     @PathVariable Long articleId,
+                                                     @CurrentUser UserPrincipal userPrincipal){
+
+        ApiResponse response = commentService.deleteComment(articleId, commentId, userPrincipal);
+
+        return new ResponseEntity<ApiResponse>(response,HttpStatus.OK);
     }
 
 
