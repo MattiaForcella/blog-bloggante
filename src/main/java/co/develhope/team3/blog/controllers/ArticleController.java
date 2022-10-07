@@ -1,15 +1,15 @@
 package co.develhope.team3.blog.controllers;
 
-import co.develhope.team3.blog.models.user.RoleName;
+import co.develhope.team3.blog.models.dto.ArticleContentDto;
+import co.develhope.team3.blog.payloads.request.CategoryIdRequest;
 import co.develhope.team3.blog.security.models.CurrentUser;
 import co.develhope.team3.blog.security.models.UserPrincipal;
+import co.develhope.team3.blog.services.CategoryService;
 import co.develhope.team3.blog.services.FileService;
-import co.develhope.team3.blog.services.impl.FileServiceImpl;
 import co.develhope.team3.blog.utils.AppConstants;
 import co.develhope.team3.blog.models.dto.ArticleDto;
 import co.develhope.team3.blog.models.dto.CategoryDto;
 import co.develhope.team3.blog.models.dto.CommentDto;
-import co.develhope.team3.blog.models.Tag;
 import co.develhope.team3.blog.payloads.response.ArticleResponse;
 import co.develhope.team3.blog.payloads.response.ArticleDeleteResponse;
 import co.develhope.team3.blog.services.ArticleService;
@@ -20,7 +20,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,13 +32,15 @@ import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/api")
 public class ArticleController {
 
     @Autowired
     private ArticleService articleService;
     @Autowired
     private FileService fileService;
+    @Autowired
+    private CategoryService categoryService;
 
 
 
@@ -113,36 +114,37 @@ public class ArticleController {
 
         return new ResponseEntity<ArticleDto>(updateArticle, HttpStatus.GONE);
     }
-    /*
 
-    TODO TEEEEEEEEEEEEEEEEEEEEEEESTTTTTTTTTTTTT
-
-     */
 
     @PutMapping("/update-content/{userId}/{articleId}/content")
     @PreAuthorize("hasRole('ROLE_EDITOR') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<ArticleDto> updateContentArticle(@PathVariable Long userId,
                                                            @PathVariable Long articleId,
-                                                           @RequestParam("content") String content,
+                                                           @RequestBody ArticleContentDto content,
                                                            @CurrentUser UserPrincipal userPrincipal) throws AuthException {
-
-        ArticleDto updateArticle = this.articleService.updateContentArticle(articleId, content, userPrincipal);
+        String contentString = content.getContent();
+        ArticleDto updateArticle = this.articleService.updateContentArticle(articleId, contentString, userPrincipal);
 
         return new ResponseEntity<ArticleDto>(updateArticle, HttpStatus.OK);
     }
+
 
 
     @PutMapping("/update-category/{userId}/{articleId}")
     @PreAuthorize("hasRole('ROLE_EDITOR') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<ArticleDto> updateCategoryArticle(@PathVariable Long userId,
                                                             @PathVariable Long articleId ,
-                                                            @RequestBody CategoryDto category,
+                                                            @RequestBody CategoryIdRequest categoryId,
                                                             @CurrentUser UserPrincipal principal) throws AuthException {
+
+        CategoryDto category = categoryService.getCategory(categoryId.getId());
 
         ArticleDto updateArticle = this.articleService.updateCategoriesArticle(articleId, category,principal);
 
         return new ResponseEntity<ArticleDto>(updateArticle, HttpStatus.OK);
     }
+
+
 
     @PutMapping("/update-comment/{userId}/{articleId}/{commentId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -150,7 +152,7 @@ public class ArticleController {
                                                            @PathVariable Long articleId ,
                                                            @RequestBody CommentDto commentId,
                                                            @CurrentUser UserPrincipal userPrincipal) throws AuthException {
-
+            //TODO DA TESTARE!!!
         ArticleDto updateArticle = this.articleService.updateCommentArticle(articleId,commentId, userPrincipal);
 
         return new ResponseEntity<ArticleDto>(updateArticle, HttpStatus.OK);
@@ -159,7 +161,7 @@ public class ArticleController {
 
     @GetMapping("/articles/search/{keywords}")
     public ResponseEntity<List<ArticleDto>> searchArticleByTitle(@PathVariable("keywords") String keywords) {
-        List<ArticleDto> result = this.articleService.searchPosts(keywords);
+        List<ArticleDto> result = this.articleService.searchPosts( keywords );
         return new ResponseEntity<List<ArticleDto>>(result, HttpStatus.OK);
     }
 
@@ -173,6 +175,7 @@ public class ArticleController {
                                                       @PathVariable Long categoryId,
                                                       @CurrentUser UserPrincipal userPrincipal) throws IOException, AuthException {
 
+        // @TODO DA TESTARE!!!
         ArticleDto articleDto = this.articleService.getArticleById(articleId);
 
         String fileName = this.fileService.uploadImage(path, image, userPrincipal, userId);
@@ -186,9 +189,11 @@ public class ArticleController {
 
     }
 
+
     @GetMapping(value = "/article/image/{imageName}",produces = MediaType.IMAGE_JPEG_VALUE)
     public void downloadImage(@PathVariable("imageName") String imageName, HttpServletResponse response) throws IOException {
 
+        // @TODO DA TESTARE!!!
         InputStream resource = this.fileService.getResource(path, imageName);
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
         StreamUtils.copy(resource,response.getOutputStream());

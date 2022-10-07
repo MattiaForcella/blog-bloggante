@@ -1,5 +1,6 @@
 package co.develhope.team3.blog.services.impl;
 
+import co.develhope.team3.blog.exceptions.BlogException;
 import co.develhope.team3.blog.models.dto.ArticleDto;
 import co.develhope.team3.blog.models.dto.CategoryDto;
 import co.develhope.team3.blog.models.dto.CommentDto;
@@ -23,7 +24,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
@@ -31,10 +31,7 @@ import org.springframework.stereotype.Service;
 import javax.security.auth.message.AuthException;
 import javax.validation.Valid;
 import java.nio.file.AccessDeniedException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static co.develhope.team3.blog.utils.AppConstants.CREATED_AT;
@@ -69,13 +66,14 @@ public class ArticleServiceImpl implements ArticleService {
 
         Category category = this.categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "category id ", categoryId));
-
+        List<Category> categories = new ArrayList<>();
+        categories.add(category);
         Article article = this.modelMapper.map(articleDto, Article.class);
         // TODO aggiungere immagine    article.setImageName("default.png");
         article.setCreatedAt(new Date());
         article.setUser(user);
 
-        article.setCategory(category);
+        article.setCategory(categories);
 
         Article newArticle = this.articleRepository.save(article);
         ArticleDto articleDto1 = this.modelMapper.map(newArticle, ArticleDto.class);
@@ -217,8 +215,10 @@ public class ArticleServiceImpl implements ArticleService {
         if (article.getUser().getId().equals(userPrincipal.getId())
                 || userPrincipal.getAuthorities().contains(new SimpleGrantedAuthority(RoleName.ROLE_ADMIN.toString()))) {
 
-            Category commentUpdate = this.modelMapper.map(commentDto, Category.class);
-            article.setCategory(commentUpdate);
+            Comment commentUpdate = this.modelMapper.map(commentDto, Comment.class);
+            List<Comment> comments = new ArrayList<>();
+            comments.add(commentUpdate);
+            article.setComments(comments);
             article.setUpdateOn(new Date());
             articleRepository.save(article);
 
@@ -233,12 +233,16 @@ public class ArticleServiceImpl implements ArticleService {
         Article article = this.articleRepository.findById(articleId)
                 .orElseThrow(()-> new ResourceNotFoundException("Article", "article id", articleId));
 
+        Category category = this.categoryRepository.findById(categoryDto.getId())
+                .orElseThrow(()-> new BlogException(HttpStatus.NOT_FOUND, "Category set not exist"));
+
         if (article.getUser().getId().equals(principal.getId())
                 || principal.getAuthorities().contains(new SimpleGrantedAuthority(RoleName.ROLE_ADMIN.toString()))
                 || principal.getAuthorities().contains(new SimpleGrantedAuthority((RoleName.ROLE_EDITOR.toString())))) {
 
-            Category categoryUpdate = this.modelMapper.map(categoryDto, Category.class);
-            article.setCategory(categoryUpdate);
+            List<Category> categories = new ArrayList<>();
+            categories.add(category);
+            article.setCategory(categories);
             article.setUpdateOn(new Date());
             articleRepository.save(article);
 
@@ -257,7 +261,8 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public ResponseEntity<List<ArticleDto>> getAllArticlesByIsNews() {
-        List<Article> articles = articleRepository.findByIsNews();
+        Boolean isNews = true;
+        List<Article> articles = articleRepository.findByIsNews(isNews);
         List<ArticleDto> articleDtos = new ArrayList<>();
         for (Article article: articles){
             ArticleDto articleDto = new ArticleDto();

@@ -26,7 +26,7 @@ public class Category {
     private Date updateOn;
 
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "category", fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "category")
     //@JsonManagedReference
     private List<Article> articles = new ArrayList<>();
 

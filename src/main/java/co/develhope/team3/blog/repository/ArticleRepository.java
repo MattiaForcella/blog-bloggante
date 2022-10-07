@@ -20,8 +20,8 @@ public interface ArticleRepository extends JpaRepository<Article,Long> {
     @Query("select a from Article a where a.title like :key")
     List<Article> searchByTitle(@Param("key") String title);
 
-    @Query(value = "select a from Article a where a.is_news = 1", nativeQuery = true)
-    List<Article> findByIsNews();
+
+    List<Article> findByIsNews( Boolean isNews);
 
     Page<Article> findByCreatedBy(String username, Pageable pageable);
 
