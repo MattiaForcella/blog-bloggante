@@ -4,11 +4,9 @@ import co.develhope.team3.blog.models.Category;
 import co.develhope.team3.blog.models.Comment;
 import co.develhope.team3.blog.models.Tag;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.*;
@@ -23,7 +21,7 @@ public class ArticleDto {
     private String title;
     @NotBlank(message = "il contenuto non puo essere vuoto")
     private String content;
-    private Date createdOn;
+    private Date createdAt;
     private Date updateOn;
 
 

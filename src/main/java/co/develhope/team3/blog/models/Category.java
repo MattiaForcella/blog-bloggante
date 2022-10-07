@@ -22,7 +22,7 @@ public class Category {
     @Column
     private String description;
 
-    private Date createdOn;
+    private Date createdAt;
     private Date updateOn;
 
 

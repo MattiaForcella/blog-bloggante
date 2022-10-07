@@ -26,6 +26,6 @@ public class CategoryDto {
 
     private List<ArticleDto> articles=new ArrayList<>();
 
-    private Date createdOn;
+    private Date createdAt;
     private Date updateOn;
 }

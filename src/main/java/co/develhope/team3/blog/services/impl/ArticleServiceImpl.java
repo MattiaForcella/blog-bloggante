@@ -273,7 +273,7 @@ public class ArticleServiceImpl implements ArticleService {
             UserDto userDto = modelMapper.map(article.getUser(), UserDto.class);
             articleDto.setUser(userDto);
             articleDto.setTitle(article.getTitle());
-            articleDto.setCreatedOn(article.getCreatedAt());
+            articleDto.setCreatedAt(article.getCreatedAt());
             articleDto.setUpdateOn(article.getUpdateOn());
             articleDto.setImageName(article.getImageName());
 
