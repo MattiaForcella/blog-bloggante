@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -22,6 +23,9 @@ public class Tag {
 
     @Column(nullable = false, length = 15)
     private String name;
+
+    @Column
+    private Date createdAt;
 
     @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "tags")
     private List<Article> article;

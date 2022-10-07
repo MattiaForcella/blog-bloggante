@@ -3,15 +3,26 @@ package co.develhope.team3.blog.services.impl;
 import co.develhope.team3.blog.models.dto.TagDto;
 import co.develhope.team3.blog.exceptions.ResourceNotFoundException;
 import co.develhope.team3.blog.models.Tag;
+import co.develhope.team3.blog.models.user.RoleName;
 import co.develhope.team3.blog.payloads.request.TagRequest;
+import co.develhope.team3.blog.payloads.response.PagedResponse;
 import co.develhope.team3.blog.repository.TagRepository;
+import co.develhope.team3.blog.security.models.UserPrincipal;
 import co.develhope.team3.blog.services.TagService;
+import co.develhope.team3.blog.utils.Utilities;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
+import javax.security.auth.message.AuthException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,6 +35,8 @@ public class TagServiceImpl implements TagService {
     private TagRepository tagRepository;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private Utilities utilities;
 
     @Override
     public ResponseEntity<List<TagDto>> getTagsLike(String name) {
@@ -45,12 +58,62 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public TagDto deleteTag(Long tagId){
-        Optional<Tag> tag = Optional.ofNullable(this.tagRepository.findById(tagId)
-                            .orElseThrow(() -> new ResourceNotFoundException("Tag", "tag_id", tagId)));
-        TagDto TagDto = this.modelMapper.map(tag, TagDto.class);
+    public TagDto deleteTag(Long tagId, Long userId, UserPrincipal current) throws AuthException {
 
-        this.tagRepository.delete(tag.get());
-        return TagDto;
+        Tag tag = tagRepository.findById(tagId).orElseThrow(() -> new ResourceNotFoundException("Tag", "id", tagId));
+
+        if (userId.equals(current.getId()) || current.getAuthorities()
+                .contains(new SimpleGrantedAuthority(RoleName.ROLE_ADMIN.toString()))) {
+
+            TagDto TagDto = this.modelMapper.map(tag, TagDto.class);
+            this.tagRepository.deleteById(tagId);
+            return TagDto;
+        }
+        throw new AuthException("You don't have permission to delete this tag");
+    }
+
+    @Override
+    public PagedResponse<Tag> getAllTags(Integer page, Integer size) {
+        utilities.validatePageNumberAndSize(page, size);
+
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
+
+        Page<Tag> tags = tagRepository.findAll(pageable);
+
+        List<Tag> content = tags.getNumberOfElements() == 0 ? Collections.emptyList() : tags.getContent();
+
+        return new PagedResponse<Tag>(content, tags.getNumber(), tags.getSize(), tags.getTotalElements(), tags.getTotalPages(), tags.isLast());
+
+    }
+
+    @Override
+    public Tag addTag(Tag tag, UserPrincipal principal, Long userId) throws AuthException {
+
+        if (userId.equals(principal.getId())
+                || principal.getAuthorities().contains(new SimpleGrantedAuthority(RoleName.ROLE_ADMIN.toString()))
+                || principal.getAuthorities().contains(new SimpleGrantedAuthority(RoleName.ROLE_EDITOR.toString()))){
+
+            return tagRepository.save(tag);
+
+        }
+          throw new AuthException("You don't have permission to add tag") ;
+
+    }
+
+    @Override
+    public Tag updateTag(Long userId, Tag newTag, UserPrincipal currentUser, Long tagId) throws AuthException {
+        Tag tag = tagRepository.findById(tagId).orElseThrow(() -> new ResourceNotFoundException("Tag", "id", tagId));
+        if (userId.equals(currentUser.getId())
+                || currentUser.getAuthorities().contains(new SimpleGrantedAuthority(RoleName.ROLE_ADMIN.toString()))
+                || currentUser.getAuthorities().contains(new SimpleGrantedAuthority(RoleName.ROLE_EDITOR.toString()))) {
+
+            tag.setName(newTag.getName());
+
+            return tagRepository.save(tag);
+
+        }
+
+        throw new AuthException("You don't have permission to update this tag");
+
     }
 }
