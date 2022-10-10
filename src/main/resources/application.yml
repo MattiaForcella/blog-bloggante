@@ -5,9 +5,9 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
   datasource:
-    url: jdbc:mysql://localhost:3306/springblog3?enabledTLSProtocols=TLSv1.2
-    username: root
-    password: ciao
+    url: jdbc:mysql://localhost:3306/**NAME**?enabledTLSProtocols=TLSv1.2
+    username: **NAME**
+    password: **NAME**
     driver-class-name: com.mysql.cj.jdbc.Driver
     initialize: true
   jpa:
@@ -19,12 +19,12 @@ spring:
       max-file-size: 20MB
       max-request-size: 20MB
   mail:
-    from: devtestdevtest828117@tiscali.it
-    host: smtp.tiscali.it
-    port: 465
+    from: **NAME**
+    host: **NAME**
+    port: **NAME**
     protocol: smtp
-    username: devtestdevtest828117@tiscali.it
-    password: _DkW3bwVqWVh3vG
+    username: **NAME**
+    password: **NAME**
     properties:
       mail:
         smtp:
@@ -45,6 +45,6 @@ project:
 
 app:
   jwt:
-    key: KTlgvPcXbnLoYl6b5Ma1oG294dGoZ+fyxBqJiBjQjVo=
+    key: **SECRET_CODE*
     time: 86400000
 
