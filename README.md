@@ -34,7 +34,7 @@ create a new local db
 ```bash
 mvn spring-boot:run
 ```
-The app will start running at <http://localhost:8080>
+The app will start running at <http://localhost:5050>
 
 ## Explore Rest APIs
 
