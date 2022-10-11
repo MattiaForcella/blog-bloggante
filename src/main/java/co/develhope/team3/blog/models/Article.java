@@ -1,6 +1,8 @@
 package co.develhope.team3.blog.models;
 
 import co.develhope.team3.blog.models.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -36,7 +38,7 @@ public class Article {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    //@JsonManagedReference
+    @JsonIgnore
     private User user = new User();
 
     @Column

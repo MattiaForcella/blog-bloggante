@@ -1,5 +1,8 @@
 package co.develhope.team3.blog.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -27,7 +30,7 @@ public class Category {
 
 
     @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "category")
-    //@JsonManagedReference
+    @JsonIgnore
     private List<Article> articles = new ArrayList<>();
 
 

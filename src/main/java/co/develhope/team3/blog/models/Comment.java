@@ -1,6 +1,7 @@
 package co.develhope.team3.blog.models;
 
 import co.develhope.team3.blog.models.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,12 +27,12 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "article_id", referencedColumnName = "id", nullable = false)
-    //@JsonManagedReference
+    @JsonIgnore
     private Article article = new Article();
 
     @ManyToOne
     @JoinColumn(name = "user_id",referencedColumnName = "id", nullable = false)
-    //@JsonManagedReference
+    @JsonIgnore
     private User user = new User();
 
 

@@ -4,6 +4,7 @@ import co.develhope.team3.blog.models.Category;
 import co.develhope.team3.blog.models.Comment;
 import co.develhope.team3.blog.models.Tag;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
